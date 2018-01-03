@@ -1,6 +1,8 @@
 """Data engineering functions, as adding some dust or normalisation"""
 import numpy as np
 
+np.random.seed(98 + 105 + 111)
+
 
 def _project_labels(data):
     return [x[0] for x in data]
@@ -35,3 +37,53 @@ def normalise(data):
     arr = (arr-a) / (b-a)
 
     return list(zip(lab, arr))
+
+
+def stir_norm(data):
+    """Stirs normalised data
+
+    Parameters
+    ----------
+    data : list
+        data [(label, value), ...], where value is list of floats
+
+    Returns
+    -------
+    list
+        data but with added noise
+    """
+    magnitude = 1e-6
+
+    lab, arr = _project_labels(data), _project_coords(data)
+    arr = np.array(arr)
+    arr += magnitude * np.random.rand(*arr.shape)
+    return list(zip(lab, arr))
+
+
+
+def stir_unorm(data):
+    """Stirs unnormalised data
+
+    Parameters
+    ----------
+    data : list
+        data [(label, value), ...], where value is list of floats
+
+    Returns
+    -------
+    list
+        data but with added noise
+    """
+    if len(data) == 0:
+        return data
+
+    k = len(data[0][1])
+
+    coord_sizes = np.sum(np.abs(_project_coords(data)), axis=1)
+
+    lenfactor = (coord_sizes.max() - coord_sizes.min()) / k
+
+    def dust():
+        return np.random.randn(k) * lenfactor * 1e-6
+
+    return [(s, i + dust()) for s, i in data]
