@@ -1,3 +1,6 @@
+# Private files
+private/
+
 # C++ build directory/logs
 bin/
 cmake-build-debug/
