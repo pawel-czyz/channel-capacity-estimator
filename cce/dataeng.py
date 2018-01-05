@@ -86,21 +86,3 @@ def stir_unorm(data):
         return np.random.randn(k) * lenfactor * 1e-6
 
     return [(s, i + dust()) for s, i in data]
-
-
-def cut_first_coordinate(arr):
-    """For 2d list of Euclidean points cuts the first coordinate
-
-    Parameters
-    ----------
-    arr : ndarray
-        shape (number of points, dimension). Alternatively it can be a list of points
-
-    Returns
-    -------
-    ndarray
-        shape (number of points, dimension-1) - array with first (0th) coordinate cut
-    """
-
-    npy_arr = np.array(arr)
-    return npy_arr[:, 1:]

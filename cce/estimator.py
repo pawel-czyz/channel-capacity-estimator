@@ -1,9 +1,11 @@
 """Weighted Kraskov estimator"""
 from cce.dataeng import normalise, stir_norm, cut_first_coordinate
-from collections import Counter
+from cce.optimize_weights import weight_optimizer
 from scipy.spatial import cKDTree
+from scipy.special import digamma
+from collections import defaultdict
 import numpy as np
-from copy import deepcopy
+
 
 np.random.seed(154)
 
@@ -37,13 +39,27 @@ class WeightedKraskovEstimator:
         self._label2index = dict()
         self._index2label = dict()
 
+        # Save in a defaultdict total number of points for a given label
+        self._number_of_points = defaultdict(lambda: 0)
+        self._number_of_labels = None
+
         # TODO - write getter and setter
         # Trees with points
-        self.full_tree = None
-        self.coordinate_tree = None
+        self.tree_full = None
+        self.tree_coordinates = None
 
         # Immersed data
-        self._immersed_data = None
+        self._immersed_data_full = None
+        self._immersed_data_coordinates = None
+
+        # Array of labels and array of neighborhood
+        self._array_labels = None
+        self._array_neighs = None
+
+        # If the data are readable
+        self._data_prepared = False
+
+
 
     @property
     def leaf_size(self):
@@ -104,36 +120,81 @@ class WeightedKraskovEstimator:
             separating_coordinate = label_index * self._huge_dist
             immersed_data.append([separating_coordinate] + list(value))
 
+            # Add this point to the summary how many points are for each label_index
+            self._number_of_points[label_index] += 1
+
         # Shuffle the data for better k-d tree performance
         np.random.shuffle(immersed_data)
 
-        self.full_tree = cKDTree(immersed_data, leafsize=self.leaf_size)
-        self.coordinate_tree = cKDTree(cut_first_coordinate(immersed_data), leafsize=self.leaf_size)
-        self._immersed_data = immersed_data
+        # Create: data, just coordinates, tree on the data, tree on the coordinates
+        self._immersed_data_full = np.array(immersed_data)
+        self._immersed_data_coordinates = immersed_data[:, 1:]
+        self.tree_full = cKDTree(self._immersed_data_full, leafsize=self.leaf_size)
+        self.tree_coordinates = cKDTree(self._immersed_data_coordinates, leafsize=self.leaf_size)
+        self._number_of_labels = index
+
+        # Calculate array of labels
+        self._array_labels = immersed_data[:, 0]
+
+        # Toggle the flag that everything is ready to be read
+        self._data_prepared = True
 
     def calculate_mi(self):
-        """Calculates MI using Kraskov estimation ond built trees
+        """Calculates MI using Kraskov estimation on the previously loaded data.
 
         Returns
         -------
         float
-            mutual information
+            mutual information in bits
         """
 
-        if self.full_tree is None or self.coordinate_tree is None:
+        if not self._data_prepared:
             raise Exception("Data have not been loaded yet.")
 
+        epses = [self.tree_full.query(datum, k=(self.k + 1), distance_upper_bound=self._huge_dist)[0][-1]
+                 for datum in self._immersed_data_full]
 
-        epses = [kdt.query(datum, k=(k+1), distance_upper_bound=_huge_dist)[0][-1]
-                    for datum in immersed_data]
+        n = len(self._immersed_data_full)
 
-    n_ints = [len(kdt_ints.query_ball_point(data[i][1], epses[i])) - 1
-              for i in range(n)]
+        n_y = [len(self.tree_coordinates.query_ball_point(self._immersed_data_coordinates[i], epses[i])) - 1
+               for i in range(n)]
 
-    return (
-               digamma(k) + digamma(n) - \
-               mean(
-                   [digamma(n_ints[i])+digamma(cnt.get(data[i][0])) for i in range(n)]
-               )
-           ) / log(2)
+        return (
+               digamma(self.k) + digamma(n) -
+               np.mean([digamma(n_y[i])+digamma(self._number_of_points[self._immersed_data_full[i][0]])
+                        for i in range(n)])
+           ) / np.log(2)
 
+    def neighborhood_array(self):
+        return self._array_neighs
+
+    def labels_array(self):
+        return self._array_labels
+
+    def optimise_weights(self):
+        return weight_optimizer(neighb_count=self.neighborhood_array(), labels=self.labels_array())
+
+    def _make_into_neigh_list(self, indices, special_point_label):
+        labels = self._array_labels[indices]
+        neigh_list = np.zeros(self._number_of_labels)
+        for lab in labels:
+            neigh_list[lab] += 1
+
+        neigh_list[special_point_label] -= 1
+
+        return neigh_list
+
+    def calculate_neighborhood(self):
+        if not self._data_prepared:
+            raise Exception("Data have not been loaded yet.")
+
+        epses = [self.tree_full.query(datum, k=(self.k + 1), distance_upper_bound=self._huge_dist)[0][-1]
+                 for datum in self._immersed_data_full]
+
+        neighs = [
+            self._make_into_neigh_list(
+                self.tree_coordinates.query_ball_point(coord, epses[i]),
+                self._array_labels[i])
+            for i, coord in enumerate(self._immersed_data_coordinates)]
+
+        self._array_neighs = np.array(neighs)
