@@ -52,7 +52,7 @@ def stir_norm(data):
     list
         data but with added noise
     """
-    magnitude = 1e-6
+    magnitude = 1e-8
 
     lab, arr = _project_labels(data), _project_coords(data)
     arr = np.array(arr)
@@ -60,9 +60,8 @@ def stir_norm(data):
     return list(zip(lab, arr))
 
 
-
 def stir_unorm(data):
-    """Stirs unnormalised data
+    """Stirs unnormalised data. Warning: this function is deprecated.
 
     Parameters
     ----------
@@ -87,3 +86,21 @@ def stir_unorm(data):
         return np.random.randn(k) * lenfactor * 1e-6
 
     return [(s, i + dust()) for s, i in data]
+
+
+def cut_first_coordinate(arr):
+    """For 2d list of Euclidean points cuts the first coordinate
+
+    Parameters
+    ----------
+    arr : ndarray
+        shape (number of points, dimension). Alternatively it can be a list of points
+
+    Returns
+    -------
+    ndarray
+        shape (number of points, dimension-1) - array with first (0th) coordinate cut
+    """
+
+    npy_arr = np.array(arr)
+    return npy_arr[:, 1:]
