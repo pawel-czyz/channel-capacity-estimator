@@ -157,7 +157,7 @@ class WeightedKraskovEstimator:
         def _n_x_for_a_given_point_index(i):
             return self._number_of_points_for_label[self.label_array[i]]
 
-        n_x = [_n_x_for_a_given_point_index(i) for i in range (n)]
+        n_x = [_n_x_for_a_given_point_index(i) for i in range(n)]
         digammas = digamma(n_y) + digamma(n_x)
 
         return (digamma(k) + digamma(n) - digammas.mean()) / np.log(2)
@@ -209,7 +209,7 @@ class WeightedKraskovEstimator:
         for lab in labels:
             neigh_list[lab] += 1
 
-        neigh_list[special_point_label] -= 1
+        # neigh_list[special_point_label] -= 1
 
         return neigh_list
 
