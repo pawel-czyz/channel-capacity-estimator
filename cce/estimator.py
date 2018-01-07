@@ -1,5 +1,5 @@
 """Weighted Kraskov estimator"""
-from cce.dataeng import normalise, stir_norm, cut_first_coordinate
+from cce.dataeng import normalise, stir_norm
 from cce.optimize_weights import weight_optimizer
 from scipy.spatial import cKDTree
 from scipy.special import digamma
@@ -8,17 +8,21 @@ import numpy as np
 
 
 np.random.seed(154)
+# Default k (neighborhood specification) value
+_DEF_K = 100
 
 
 class WeightedKraskovEstimator:
     # Constant separating points with different labels (X)
     _huge_dist = 1e6
 
-    def __init__(self, leaf_size=16):
+    def __init__(self, data=None, leaf_size=16):
         """Weighted Kraskov Estimator
 
         Parameters
         ----------
+        data : list
+            check `load` method
         leaf_size : int
             positive integer, used for tree construction
         """
@@ -49,15 +53,17 @@ class WeightedKraskovEstimator:
         self.label_array = None
         self.neighborhood_array = None
 
-        # If the data are readable
+        # If the data have been loaded
         self._data_loaded = False
 
-        # We store last used k and calculated epsilon for each point. It theoretically speeds up the algorithm
-        # but costs additional memory
+        # We store last used k, to restore the arrays from cache is possible (so the data and k have not changed)
         self._k = None
-        self._epsilons = None
         # If _new_data_loaded is True, we know that we need to recalculate epsilons
         self._new_data_loaded = False
+
+        # Data may be provided during the initialisation. We need to load them at the end of __init__
+        if data is not None:
+            self.load(data)
 
     def load(self, data):
         """Loads data into the structure.
@@ -76,11 +82,13 @@ class WeightedKraskovEstimator:
         normalised_data = stir_norm(normalised_data)
 
         # Sort data for better branch prediction.
-        normalised_data = sorted(normalised_data, key=hash)
+        # normalised_data = sorted(normalised_data, key=hash)
         # `immersed_data` is a list of Euclidean points: [ [label_real, coordinate_1, coordinate_2, ...], ... ]
         immersed_data = []
         # `index` is a unique int for every label. It will have values 0, 1, 2, ...
         index = 0
+        # We want to build array of labels in this step
+        label_array_tmp = []
 
         for label, value in normalised_data:
             # If it is the first time we see this label, we create a new category for it.
@@ -93,6 +101,7 @@ class WeightedKraskovEstimator:
             label_index = self._label2index[label]
             separating_coordinate = label_index * self._huge_dist
             immersed_data.append([separating_coordinate] + list(value))
+            label_array_tmp.append(label_index)
 
             # Add this point to the summary how many points are for each label_index
             self._number_of_points_for_label[label_index] += 1
@@ -101,14 +110,14 @@ class WeightedKraskovEstimator:
         self._number_of_labels = index
 
         # Shuffle the data for better k-d tree performance
-        np.random.shuffle(immersed_data)
+        # np.random.shuffle(immersed_data)
 
         # Create immersed data and data without label information (X x Y and Y)
         self._immersed_data_full = np.array(immersed_data)
-        self._immersed_data_coordinates = immersed_data[:, 1:]
+        self._immersed_data_coordinates = self._immersed_data_full[:, 1:]
 
         # Calculate array of labels
-        self.label_array = immersed_data[:, 0]
+        self.label_array = np.array(label_array_tmp, dtype=np.uint32)
 
         # Calculate the number of points
         self._number_of_points_total = len(self._immersed_data_full)
@@ -122,33 +131,11 @@ class WeightedKraskovEstimator:
         # Toggle the flag that new data appeared and we need to recalculate epsilons
         self._new_data_loaded = True
 
-    def _prepare_epsilons(self, k):
-        """Returns the list of epsilons. Uses caching.
-
-        Parameters
-        ----------
-        k : int
-            number of points in neighborhood used for new estimation
-
-        Returns
-        -------
-        list
-            list of floats, one for each point
-        """
-        # If in the meantime the data have changed or someone wants to use different k, we need to recalculate
-        # epsilons. Otherwise we can use cached value
-        if self._new_data_loaded or k != self._k:
-            self._k = k
-            self._epsilons = [self.tree_full.query(datum, k=k+1, distance_upper_bound=self._huge_dist)[0][-1]
-                              for datum in self._immersed_data_full]
-            self._new_data_loaded = False
-        return self._epsilons
-
     def _check_if_data_are_loaded(self):
         if not self._data_loaded:
             raise Exception("Data have not been loaded yet.")
 
-    def calculate_mi(self, k=100):
+    def calculate_mi(self, k=_DEF_K):
         """Calculates MI using Kraskov estimation on the previously loaded data.
 
         Parameters
@@ -161,22 +148,39 @@ class WeightedKraskovEstimator:
         float
             mutual information in bits
         """
-        self._check_if_data_are_loaded()
-
         n = self._number_of_points_total
-        epses = self._prepare_epsilons(k=k)
+        self.calculate_neighborhood(k=k)
 
-        n_y = [len(self.tree_coordinates.query_ball_point(self._immersed_data_coordinates[i], epses[i])) - 1
-               for i in range(n)]
+        # Calculate number of points in neighborhood
+        n_y = self.neighborhood_array.sum(axis=1)
 
         def _n_x_for_a_given_point_index(i):
             return self._number_of_points_for_label[self.label_array[i]]
 
-        return (
-               digamma(k) + digamma(n) -
-               np.mean([digamma(n_y[i])+digamma(_n_x_for_a_given_point_index(i))
-                        for i in range(n)])
-           ) / np.log(2)
+        n_x = [_n_x_for_a_given_point_index(i) for i in range (n)]
+        digammas = digamma(n_y) + digamma(n_x)
+
+        return (digamma(k) + digamma(n) - digammas.mean()) / np.log(2)
+
+    def calculate_weighted_mi(self, weights, k=_DEF_K):
+        """Calculates weighted mutual information in bits.
+
+        Parameters
+        ----------
+        weights : dict
+            dictionary {label1: weight1, label2: weight2, ...}. All weights should sum up to 1 and be non-negative
+            floats
+        k : int
+            positive int choosing the size of the neighborhood
+
+        Returns
+        -------
+        float
+            weighted mutual information in bits
+        """
+        w_list = [ weights[self._index2label[i]] for i in range(self._number_of_labels)]
+        w_list = np.array(w_list)
+        raise Exception("Method has not been implemented yet.")
 
     def optimise_weights(self):
         """Function optimising weights using weight_optimizer - the output is still under consideration."""
@@ -184,8 +188,8 @@ class WeightedKraskovEstimator:
             raise Exception("New data have been loaded.")
         return weight_optimizer(neighb_count=self.neighborhood_array, labels=self.label_array)
 
-    def _make_into_neigh_list(self, indices, special_point_label):
-        """Prepare a column (row?) of neighborhood matrix.
+    def _turn_into_neigh_list(self, indices, special_point_label):
+        """Prepares a row of neighborhood matrix.
 
         Parameters
         ----------
@@ -200,6 +204,7 @@ class WeightedKraskovEstimator:
             calculated neighborhoods
         """
         labels = self.label_array[indices]
+
         neigh_list = np.zeros(self._number_of_labels)
         for lab in labels:
             neigh_list[lab] += 1
@@ -208,15 +213,26 @@ class WeightedKraskovEstimator:
 
         return neigh_list
 
-    def calculate_neighborhood(self, k):
-        """Function that prepared neighborhood_array. It may be still changed, as we may decideto cache more data"""
+    def calculate_neighborhood(self, k=_DEF_K):
+        """Function that prepares neighborhood_array. It may be still changed, as we may decide to cache more data"""
         self._check_if_data_are_loaded()
-        epses = self._prepare_epsilons(k=k)
+
+        # If the data nor neighborhood specification haven't changed, we can use cached value
+        if not self._new_data_loaded and k == self._k:
+            return
+
+        # Otherwise we need to recalculate everything
+        self._k = k
+        epses = [self.tree_full.query(datum, k=k+1, distance_upper_bound=self._huge_dist)[0][-1]
+                 for datum in self._immersed_data_full]
 
         neighs = [
-            self._make_into_neigh_list(
+            self._turn_into_neigh_list(
                 self.tree_coordinates.query_ball_point(coord, epses[i]),
                 self.label_array[i])
             for i, coord in enumerate(self._immersed_data_coordinates)]
 
         self.neighborhood_array = np.array(neighs)
+
+        # ... and toggle the flag that we have fresh data now
+        self._new_data_loaded = False

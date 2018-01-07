@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def generate_teddybears(production_plan, fluffiness, precision = 0.01):
+def generate_teddybears(production_plan, fluffiness, precision=0.01):
     """Creates a list of pairs (plushie, [fluffiness])
 
     Parameters
@@ -28,7 +28,6 @@ def generate_teddybears(production_plan, fluffiness, precision = 0.01):
     """
     delivery = []
     for plushie, quantity in production_plan.items():
-        target_fluffiness = fluffiness[plushie]
         for _ in range(quantity):
             outcome_fluffiness = (
                     fluffiness[plushie] +
@@ -40,24 +39,27 @@ def generate_teddybears(production_plan, fluffiness, precision = 0.01):
     return delivery
 
 
-# extra cute example
-def _example():
+if __name__ == "__main__":
+    print("Extra cute example")
+    print("******************")
+    print("\n\nProduction")
     prod_plan = {
-        "black_teddy" : 10,
-        "white_teddy" : 10,
-        "giant_bunny" : 10
+        "black_teddy": 10,
+        "white_teddy": 10,
+        "giant_bunny": 10
     }
+    for k, v in prod_plan.items():
+        print(k, ":", v)
 
+    print("\n\nFluffiness")
     fluff = {
-        "black_teddy" : 0.,
-        "white_teddy" : 0.,
-        "giant_bunny" : 1.
+        "black_teddy": 0.,
+        "white_teddy": 0.,
+        "giant_bunny": 1.
     }
+    for k, v in fluff.items():
+        print(k, ":", v)
 
-    print(
-        generate_teddybears(
-            prod_plan,
-            fluff,
-            1e-4
-        )
-    )
+    print("\n\nEffect")
+    for u in generate_teddybears(prod_plan, fluff, 1e-4):
+        print(u)
