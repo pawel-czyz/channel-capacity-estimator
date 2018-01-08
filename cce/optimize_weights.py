@@ -40,11 +40,19 @@ def weight_optimizer(neighb_count, labels):
         # weight lookup list
         w_list = tf.reduce_sum(tf.one_hot(labels, num_labels) * w, axis=1)
 
-        nx = label_cnts * w
-        ny = tf.reduce_sum(Neigh_matx * w, axis=1)
+        # label cnts lookup list
+        label_cnts_list = tf.reduce_sum(tf.one_hot(labels, num_labels) *
+                label_cnts, axis=1)
 
-        loss = ( tf.reduce_sum(tf.digamma(nx) * nx) +
-                 tf.reduce_sum(tf.digamma(ny) * w_list) ) / num_data
+        nx = w * num_data
+        
+        ny = label_cnts_list / w_list * tf.reduce_sum(
+                Neigh_matx * (w/label_cnts), axis=1
+             )
+
+
+        loss = ( tf.reduce_sum(tf.digamma(nx) * w) +
+                 tf.reduce_sum(tf.digamma(ny) * w_list / label_cnts_list) )
 
         optimizer = tf.train.AdamOptimizer()
         train = optimizer.minimize(loss)
@@ -52,12 +60,12 @@ def weight_optimizer(neighb_count, labels):
         with tf.Session() as sess:
                 sess.run(tf.global_variables_initializer())
                 print("Starting training...")
-                for i in range(1000):
-                        curr_loss, curr_w, curr_nx, curr_ny, _ = sess.run(
-                                [loss, w, nx, ny, train]
+                for i in range(15000):
+                        curr_loss, curr_w, _ = sess.run(
+                                [loss, w, train]
                         )
-                        if i % 100 == 0:
-                                print("loss: %s, w: %s, nx: %s, ny: %s"
-                                        % (curr_loss, curr_w, curr_nx, curr_ny))
+                        if i % 300 == 0:
+                                print("loss: %s, w: %s"
+                                        % (curr_loss, curr_w))
                 print("Done.")
                 return sess.run(w)
