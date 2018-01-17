@@ -1,6 +1,7 @@
 """Weighted Kraskov estimator"""
 from cce.dataeng import normalise, stir_norm
 from cce.optimize_weights import weight_optimizer
+from cce.calculate_weighted_loss import weight_loss
 from scipy.spatial import cKDTree
 from scipy.special import digamma
 from collections import defaultdict
@@ -178,15 +179,43 @@ class WeightedKraskovEstimator:
         float
             weighted mutual information in bits
         """
-        w_list = [ weights[self._index2label[i]] for i in range(self._number_of_labels)]
-        w_list = np.array(w_list)
-        raise Exception("Method has not been implemented yet.")
+        self.calculate_neighborhood(k=k)
+
+        w_list = [ weights[self._index2label[i]]
+                    for i in range(self._number_of_labels) ]
+
+        loss = weight_loss(
+                neighb_count=self.neighborhood_array,
+                labels=self.label_array,
+                weights=w_list
+        )
+
+        k = self._k
+        n = self._number_of_points_total
+        optimized_mi = digamma(k) + digamma(n) - loss
+
+        return optimized_mi / np.log(2)
 
     def optimise_weights(self):
         """Function optimising weights using weight_optimizer - the output is still under consideration."""
         if self._new_data_loaded:
             raise Exception("New data have been loaded.")
-        return weight_optimizer(neighb_count=self.neighborhood_array, labels=self.label_array)
+
+        # get loss and best weights from tensorflow
+        loss, w = weight_optimizer(
+                neighb_count=self.neighborhood_array,
+                labels=self.label_array
+        )
+
+        # get back initial labels
+        w_dict = {self._index2label[i] : w for i, w in enumerate(w)}
+        
+        # just a final touch :)
+        k = self._k
+        n = self._number_of_points_total
+        optimized_mi = digamma(k) + digamma(n) - loss
+
+        return optimized_mi / np.log(2), w_dict
 
     def _turn_into_neigh_list(self, indices, special_point_label):
         """Prepares a row of neighborhood matrix.
@@ -228,7 +257,7 @@ class WeightedKraskovEstimator:
 
         neighs = [
             self._turn_into_neigh_list(
-                self.tree_coordinates.query_ball_point(coord, epses[i]),
+                self.tree_coordinates.query_ball_point(coord, epses[i] - 1e-10),
                 self.label_array[i])
             for i, coord in enumerate(self._immersed_data_coordinates)]
 
