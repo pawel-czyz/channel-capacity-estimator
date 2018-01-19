@@ -52,7 +52,7 @@ def mi_kraskov(data, k=100):
     epses = [kdt.query(datum, k=(k+1), distance_upper_bound=_huge_dist)[0][-1]
                 for datum in immersed_data]
 
-    n_ints = [len(kdt_ints.query_ball_point(data[i][1], epses[i]))
+    n_ints = [len(kdt_ints.query_ball_point(data[i][1], epses[i] - 1e-10))
                 for i in range(n)]
 
     return (

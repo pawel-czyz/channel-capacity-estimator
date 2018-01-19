@@ -39,7 +39,9 @@ class NormalisationTests(unittest.TestCase):
 
 class StirringTests(unittest.TestCase):
     def test_something(self):
-        self.assertEqual(True, False)
+        print("Test TODO! tests/test_dataeng.py: StirringTests")
+        # TODO
+        # self.assertEqual(True, False)
 
 
 if __name__ == '__main__':

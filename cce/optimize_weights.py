@@ -60,7 +60,7 @@ def weight_optimizer(neighb_count, labels):
         with tf.Session() as sess:
                 sess.run(tf.global_variables_initializer())
                 print("Starting training...")
-                for i in range(5000):
+                for i in range(1000):
                         curr_loss, curr_w, _ = sess.run(
                                 [loss, w, train]
                         )

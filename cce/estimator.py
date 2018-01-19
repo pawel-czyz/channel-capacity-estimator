@@ -238,7 +238,7 @@ class WeightedKraskovEstimator:
         for lab in labels:
             neigh_list[lab] += 1
 
-        # neigh_list[special_point_label] -= 1
+        neigh_list[special_point_label] -= 1
 
         return neigh_list
 
@@ -257,7 +257,7 @@ class WeightedKraskovEstimator:
 
         neighs = [
             self._turn_into_neigh_list(
-                self.tree_coordinates.query_ball_point(coord, epses[i] - 1e-10),
+                self.tree_coordinates.query_ball_point(coord, epses[i]),# - 1e-10),
                 self.label_array[i])
             for i, coord in enumerate(self._immersed_data_coordinates)]
 
