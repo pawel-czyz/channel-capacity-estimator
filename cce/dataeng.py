@@ -39,6 +39,22 @@ def normalise(data):
     return list(zip(lab, arr))
 
 
+def unique(arr):
+    """Checks if array of coordinate points has all points unique.
+
+    Parameters
+    ----------
+    arr : list
+        arr [[float, float, ...], ...]
+
+    Returns
+    --------
+    bool:
+        all points unique?
+    """
+    return len(arr) == len({tuple(p) for p in arr})
+
+
 def stir_norm(data):
     """Stirs normalised data
 
@@ -52,11 +68,25 @@ def stir_norm(data):
     list
         data but with added noise
     """
-    magnitude = 1e-8
 
     lab, arr = _project_labels(data), _project_coords(data)
     arr = np.array(arr)
-    arr += magnitude * np.random.rand(*arr.shape)
+    if not unique(arr):
+        print("WARNING: data contains points that are not unique.",
+              "This is known to cause numerical issues.",
+              "Slightly perturbating data...")
+        eps = min(filter(lambda x: x > 0,
+                         {x for x in np.ndarray.flatten(arr)}))
+        eps /= 2000
+
+        arr += eps * np.random.rand(*arr.shape)
+        while not unique(arr):
+            eps /= 2
+            arr += eps * np.random.rand(*arr.shape)
+            if eps == 0.:
+                print("Failed!\n")
+                assert(False)
+        
     return list(zip(lab, arr))
 
 
