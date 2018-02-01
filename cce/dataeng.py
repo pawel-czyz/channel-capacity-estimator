@@ -77,7 +77,7 @@ def stir_norm(data):
               "Slightly perturbating data...")
         eps = min(filter(lambda x: x > 0,
                          {x for x in np.ndarray.flatten(arr)}))
-        eps /= 2000
+        eps /= 2
 
         arr += eps * np.random.rand(*arr.shape)
         while not unique(arr):
@@ -86,6 +86,8 @@ def stir_norm(data):
             if eps == 0.:
                 print("Failed!\n")
                 assert(False)
+        
+        print("eps used:", eps)
         
     return list(zip(lab, arr))
 
