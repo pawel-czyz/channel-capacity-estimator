@@ -8,7 +8,6 @@ from scipy.stats.distributions import norm
 class TestWeightOptimizer(unittest.TestCase):
     def test_two_peaks_1(self):
         """Calculate optimal weights of teddy -> 0 and bunny -> 1. Equal sample sizes."""
-        print("Running two eq")
         prod = {"teddy": 5000, "bunny": 5000}
         fluf = {"teddy": 0, "bunny": 1}
         data = generate_teddybears(prod, fluf, 0.0001)
@@ -21,7 +20,6 @@ class TestWeightOptimizer(unittest.TestCase):
 
     def test_two_peaks_2(self):
         """Calculate the MI of teddy -> 0 and bunny -> 1. Unequal sample sizes."""
-        print("Running two uneq")
         prod = {"teddy": 2500, "bunny": 5000}
         fluf = {"teddy": 0, "bunny": 1}
         data = generate_teddybears(prod, fluf, 0.0001)
@@ -34,7 +32,6 @@ class TestWeightOptimizer(unittest.TestCase):
 
     def test_two_categories_of_teddies(self):
         """Calculate MI of teddy_black, teddy_brown -> 0 and bunny -> 1. Equal sample sizes for each category"""
-        print("Running three eq")
         prod = {"teddy_black": 2500, "teddy_brown": 2500, "bunny": 2500}
         fluf = {"teddy_black": 0, "teddy_brown": 0, "bunny": 1}
         data = generate_teddybears(prod, fluf, 0.0001)

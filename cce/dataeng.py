@@ -90,31 +90,3 @@ def stir_norm(data):
         print("eps used:", eps)
         
     return list(zip(lab, arr))
-
-
-def stir_unorm(data):
-    """Stirs unnormalised data. Warning: this function is deprecated.
-
-    Parameters
-    ----------
-    data : list
-        data [(label, value), ...], where value is list of floats
-
-    Returns
-    -------
-    list
-        data but with added noise
-    """
-    if len(data) == 0:
-        return data
-
-    k = len(data[0][1])
-
-    coord_sizes = np.sum(np.abs(_project_coords(data)), axis=1)
-
-    lenfactor = (coord_sizes.max() - coord_sizes.min()) / k
-
-    def dust():
-        return np.random.randn(k) * lenfactor * 1e-6
-
-    return [(s, i + dust()) for s, i in data]
