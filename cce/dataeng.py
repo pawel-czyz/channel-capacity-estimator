@@ -4,15 +4,15 @@ import numpy as np
 np.random.seed(98 + 105 + 111)
 
 
-def _project_labels(data):
+def _project_labels(data: list) -> list:
     return [x[0] for x in data]
 
 
-def _project_coords(data):
+def _project_coords(data: list) -> list:
     return [x[1] for x in data]
 
 
-def normalise(data):
+def normalise(data: list) -> list:
     """Data normalisation
 
     Parameters
@@ -39,23 +39,23 @@ def normalise(data):
     return list(zip(lab, arr))
 
 
-def unique(arr):
+def unique(arr) -> bool:
     """Checks if array of coordinate points has all points unique.
 
     Parameters
     ----------
-    arr : list
+    arr : iterable
         arr [[float, float, ...], ...]
 
     Returns
     --------
     bool:
-        all points unique?
+        True if points are distinct, False otherwise
     """
     return len(arr) == len({tuple(p) for p in arr})
 
 
-def stir_norm(data):
+def stir_norm(data: list) -> list:
     """Stirs normalised data
 
     Parameters
@@ -84,9 +84,7 @@ def stir_norm(data):
             eps /= 2
             arr += eps * np.random.rand(*arr.shape)
             if eps == 0.:
-                print("Failed!\n")
-                assert(False)
-        
+                raise Exception("Data normalisation failed. Points cannot be stirred properly.")
         print("eps used:", eps)
         
     return list(zip(lab, arr))

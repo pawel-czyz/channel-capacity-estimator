@@ -1,1 +1,1 @@
-from cce.estimator import WeightedKraskovEstimator
+from .estimator import WeightedKraskovEstimator

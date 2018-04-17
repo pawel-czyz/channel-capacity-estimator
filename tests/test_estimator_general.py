@@ -16,7 +16,7 @@ class TestEstimator(unittest.TestCase):
         wke.calculate_neighborhood(10)
 
         # TODO
-        # self.assertTrue(False)
+        self.assertTrue(False)
 
 if __name__ == '__main__':
     unittest.main()

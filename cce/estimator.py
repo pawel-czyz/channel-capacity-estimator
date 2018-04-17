@@ -17,7 +17,7 @@ class WeightedKraskovEstimator:
     # Constant separating points with different labels (X)
     _huge_dist = 1e6
 
-    def __init__(self, data=None, leaf_size=16):
+    def __init__(self, data: list=None, leaf_size: int=16):
         """Weighted Kraskov Estimator
 
         Parameters
@@ -66,7 +66,7 @@ class WeightedKraskovEstimator:
         if data is not None:
             self.load(data)
 
-    def load(self, data):
+    def load(self, data: list):
         """Loads data into the structure.
 
         Parameters
@@ -136,8 +136,8 @@ class WeightedKraskovEstimator:
         if not self._data_loaded:
             raise Exception("Data have not been loaded yet.")
 
-    def calculate_mi(self, k=_DEF_K):
-        """Calculates MI using Kraskov estimation on the previously loaded data.
+    def calculate_mi(self, k: int=_DEF_K) -> float:
+        """Calculates MI using Kraskov estimation using previously loaded data.
 
         Parameters
         ----------
@@ -163,7 +163,7 @@ class WeightedKraskovEstimator:
 
         return (digamma(k) + digamma(n) - digammas.mean()) / np.log(2)
 
-    def calculate_weighted_mi(self, weights, k=_DEF_K):
+    def calculate_weighted_mi(self, weights: dict, k: int=_DEF_K) -> float:
         """Calculates weighted mutual information in bits.
 
         Parameters
@@ -181,8 +181,7 @@ class WeightedKraskovEstimator:
         """
         self.calculate_neighborhood(k=k)
 
-        w_list = [ weights[self._index2label[i]]
-                    for i in range(self._number_of_labels) ]
+        w_list = [weights[self._index2label[i]] for i in range(self._number_of_labels)]
 
         loss = weight_loss(
                 neighb_count=self.neighborhood_array,
@@ -196,7 +195,7 @@ class WeightedKraskovEstimator:
 
         return optimized_mi / np.log(2)
 
-    def optimise_weights(self):
+    def optimize_weights(self):
         """Function optimising weights using weight_optimizer - the output is still under consideration."""
         if self._new_data_loaded:
             raise Exception("New data have been loaded.")
@@ -208,7 +207,7 @@ class WeightedKraskovEstimator:
         )
 
         # get back initial labels
-        w_dict = {self._index2label[i] : w for i, w in enumerate(w)}
+        w_dict = {self._index2label[i]: w for i, w in enumerate(w)}
         
         # just a final touch :)
         k = self._k
@@ -257,7 +256,7 @@ class WeightedKraskovEstimator:
 
         neighs = [
             self._turn_into_neigh_list(
-                self.tree_coordinates.query_ball_point(coord, epses[i]),# - 1e-10),
+                self.tree_coordinates.query_ball_point(coord, epses[i]),  # - 1e-10),
                 self.label_array[i])
             for i, coord in enumerate(self._immersed_data_coordinates)]
 

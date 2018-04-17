@@ -2,7 +2,6 @@ import unittest
 from cce.estimator import WeightedKraskovEstimator
 from tests.teddybear_fabric import generate_teddybears
 import numpy as np
-from scipy.stats.distributions import norm
 
 
 class TestWeightedMI(unittest.TestCase):
@@ -38,7 +37,8 @@ class TestWeightedMI(unittest.TestCase):
             self.assertAlmostEqual(mi, 1, delta=0.01)
 
     def test_two_categories_of_teddies(self):
-        """Calculate MI of teddy_black, teddy_brown -> 0 and bunny -> 1. Equal sample sizes and weights for each category"""
+        """Calculate MI of teddy_black, teddy_brown -> 0 and bunny -> 1.
+        Equal sample sizes and weights for each category"""
         prod = {"teddy_black": 2500, "teddy_brown": 2500, "bunny": 2500}
         fluf = {"teddy_black": 0, "teddy_brown": 0, "bunny": 1}
         data = generate_teddybears(prod, fluf, 0.0001)
