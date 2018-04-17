@@ -42,7 +42,7 @@ class TestWeightOptimizer(unittest.TestCase):
         self.assertAlmostEqual(ws["bunny"], 0.50, delta=0.01)
 
 #    def test_gaussians(self):
-#        print("Calculate optimal MI for a couple gaussians")
+#        print("Calculate optimal MI for a couple Gaussians")
 #        def _mu_sigma(i):
 #            return (1.5*(i+1), (i+1)/4. + 1)
 #

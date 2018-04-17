@@ -195,8 +195,16 @@ class WeightedKraskovEstimator:
 
         return optimized_mi / np.log(2)
 
-    def optimize_weights(self):
-        """Function optimising weights using weight_optimizer - the output is still under consideration."""
+    def optimize_weights(self) -> (float, dict):
+        """Function optimising weights using weight_optimizer.
+
+        Returns
+        -------
+        float
+            optimized MI, in bits
+        dict
+            dictionary mapping labels to weights
+        """
         if self._new_data_loaded:
             raise Exception("New data have been loaded.")
 
@@ -241,8 +249,8 @@ class WeightedKraskovEstimator:
 
         return neigh_list
 
-    def calculate_neighborhood(self, k=_DEF_K):
-        """Function that prepares neighborhood_array. It may be still changed, as we may decide to cache more data"""
+    def calculate_neighborhood(self, k: int=_DEF_K):
+        """Function that prepares neighborhood_array."""
         self._check_if_data_are_loaded()
 
         # If the data nor neighborhood specification haven't changed, we can use cached value
@@ -262,5 +270,5 @@ class WeightedKraskovEstimator:
 
         self.neighborhood_array = np.array(neighs)
 
-        # ... and toggle the flag that we have fresh data now
+        # ... and turn off the flag with fresh data
         self._new_data_loaded = False

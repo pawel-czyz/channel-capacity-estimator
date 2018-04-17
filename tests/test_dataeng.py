@@ -37,12 +37,5 @@ class NormalisationTests(unittest.TestCase):
             self.assertAlmostEqual(mx, 1)
 
 
-class StirringTests(unittest.TestCase):
-    def test_something(self):
-        print("Test TODO! tests/test_dataeng.py: StirringTests")
-        # TODO
-        self.assertEqual(True, False)
-
-
 if __name__ == '__main__':
     unittest.main()
