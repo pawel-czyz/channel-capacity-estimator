@@ -38,7 +38,7 @@ To install just run
 
 .. code:: bash
 
-    $ make test
+    $ make install
 
 Then, you can directly start using the package:
 
