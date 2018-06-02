@@ -24,6 +24,9 @@ def weight_loss(neighb_count: np.array, labels: np.array, weights: list) -> floa
     float
         calculated loss
     """
+    # reset graph before each run
+    tf.reset_default_graph()
+
     num_data, num_labels = neighb_count.shape
     label_counts = np.zeros([num_labels])
     for label, count in Counter(labels).most_common():

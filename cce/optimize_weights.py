@@ -21,6 +21,9 @@ def weight_optimizer(neighb_count, labels) -> (float, list):
     list
         weight for each label
     """
+    # reset graph before each run
+    tf.reset_default_graph()
+
     num_data, num_labels = neighb_count.shape
     label_counts = np.zeros([num_labels])
     for label, count in Counter(labels).most_common():
