@@ -40,17 +40,17 @@ in which each point is labeled according to its distribution of origin.
 
 .. code:: python
 
-  >>> from scipy.stats import multivariate_normal as mvn
-  >>> from cce import WeightedKraskovEstimator as wke
-  >>>
-  >>> def label_all_with(label, values): return [(label, v) for v in values]
-  >>>
-  >>> data = label_all_with('A', mvn(mean=(0,0)).rvs(10000)) \
-            +label_all_with('B', mvn(mean=(1,1)).rvs(10000)) \
-            +label_all_with('C', mvn(mean=(3,3)).rvs(10000)) 
-  >>>
-  >>> wke(data).calculate_mi(k=50)
-  0.9386627422798913
+    >>> from scipy.stats import multivariate_normal as mvn
+    >>> from cce import WeightedKraskovEstimator as wke
+    >>>
+    >>> def label_all_with(label, values): return [(label, v) for v in values]
+    >>>
+    >>> data = label_all_with('A', mvn(mean=(0,0)).rvs(10000)) \
+              +label_all_with('B', mvn(mean=(1,1)).rvs(10000)) \
+              +label_all_with('C', mvn(mean=(3,3)).rvs(10000)) 
+    >>>
+    >>> wke(data).calculate_mi(k=50)
+    0.9386627422798913
 
 Probabilities of input distributions, henceforth referred to as *weights*,
 by default are assumed to be equal for all input distributions. Format of 
@@ -69,18 +69,18 @@ input distributions:
 
 .. code:: python
 
-  >>> from scipy.stats import multivariate_normal as mvn
-  >>> from cce import WeightedKraskovEstimator as wke
-  >>>
-  >>> def label_all_with(label, values): return [(label, v) for v in values]
-  >>>
-  >>> data = label_all_with('A', mvn(mean=(0,0)).rvs(10000)) \
-            +label_all_with('B', mvn(mean=(1,1)).rvs(10000)) \
-            +label_all_with('C', mvn(mean=(3,3)).rvs(10000))
-  >>>
-  >>> weights = {'A': 3/6, 'B': 1/6, 'C': 2/6}
-  >>> wke(data).calculate_weighted_mi(weights=weights, k=50)
-  0.9420502318804324  
+    >>> from scipy.stats import multivariate_normal as mvn
+    >>> from cce import WeightedKraskovEstimator as wke
+    >>>
+    >>> def label_all_with(label, values): return [(label, v) for v in values]
+    >>>
+    >>> data = label_all_with('A', mvn(mean=(0,0)).rvs(10000)) \
+              +label_all_with('B', mvn(mean=(1,1)).rvs(10000)) \
+              +label_all_with('C', mvn(mean=(3,3)).rvs(10000))
+    >>>
+    >>> weights = {'A': 3/6, 'B': 1/6, 'C': 2/6}
+    >>> wke(data).calculate_weighted_mi(weights=weights, k=50)
+    0.9420502318804324  
 
 (This example involves random numbers, so your result may vary slightly.)
 
@@ -88,17 +88,17 @@ input distributions:
 
 .. code:: python
 
-  >>> from scipy.stats import multivariate_normal as mvn
-  >>> from cce import WeightedKraskovEstimator as wke
-  >>>
-  >>> data = label_all_with('A', mvn(mean=(0,0)).rvs(10000)) \
-            +label_all_with('B', mvn(mean=(1,1)).rvs(10000)) \
-            +label_all_with('C', mvn(mean=(3,3)).rvs(10000))
-  >>>
-  >>> estimator = wke(data)
-  >>> estimator.calculate_neighborhood(k=50)
-  >>> estimator.optimize_weights()
-  (0.98616722147976, {'A': 0.38123083, 'B': 0.16443817, 'C': 0.45433092})
+    >>> from scipy.stats import multivariate_normal as mvn
+    >>> from cce import WeightedKraskovEstimator as wke
+    >>>
+    >>> data = label_all_with('A', mvn(mean=(0,0)).rvs(10000)) \
+              +label_all_with('B', mvn(mean=(1,1)).rvs(10000)) \
+              +label_all_with('C', mvn(mean=(3,3)).rvs(10000))
+    >>>
+    >>> estimator = wke(data)
+    >>> estimator.calculate_neighborhood(k=50)
+    >>> estimator.optimize_weights()
+    (0.98616722147976, {'A': 0.38123083, 'B': 0.16443817, 'C': 0.45433092})
 
 The output tuple contains the maximized mutual information (channel capacity) 
 and probabilities of input distributions that maximize mutual information (argmax). 
