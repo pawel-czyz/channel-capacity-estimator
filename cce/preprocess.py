@@ -1,3 +1,7 @@
+# This file is part of Channel Capacity Estimator,
+# licenced under GNU GPL 3 (see file License.txt).
+# Homepage: http://pmbm.ippt.pan.pl/software/cce 
+
 """Input data preprocessing functions"""
 
 import numpy as np
@@ -55,7 +59,7 @@ def unique(arr) -> bool:
     return len(arr) == len({tuple(p) for p in arr})
 
 
-def add_noise(data: list) -> list:
+def add_noise_if_duplicates(data: list) -> list:
     """Add noise to input data
 
     Parameters

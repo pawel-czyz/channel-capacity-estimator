@@ -1,8 +1,8 @@
 import unittest
-from cce.estimator import WeightedKraskovEstimator
-from tests.teddybear_fabric import generate_teddybears
 import numpy as np
-from tests.kraskov import mi_kraskov
+from cce.estimator import WeightedKraskovEstimator
+from tests.teddybear_factory import generate_teddybears
+from tests.simple_kraskov import simple_calculate_mi
 
 
 class TestEstimator(unittest.TestCase):
@@ -14,7 +14,7 @@ class TestEstimator(unittest.TestCase):
         wke = WeightedKraskovEstimator(data)
 
         mi1 = wke.calculate_mi(k=100)
-        mi2 = mi_kraskov(data=data, k=100)
+        mi2 = simple_calculate_mi(data=data, k=100)
 
         self.assertAlmostEqual(mi1, 1, delta=0.02)
         self.assertAlmostEqual(mi1, mi2, delta=0.005)
@@ -27,7 +27,7 @@ class TestEstimator(unittest.TestCase):
         wke = WeightedKraskovEstimator(data)
 
         mi1 = wke.calculate_mi(k=100)
-        mi2 = mi_kraskov(data=data, k=100)
+        mi2 = simple_calculate_mi(data=data, k=100)
         mi3 = -(np.log2(2/3)*2/3 + np.log2(1/3)*1/3)
 
         self.assertAlmostEqual(mi1, mi3, delta=0.02)
@@ -41,7 +41,7 @@ class TestEstimator(unittest.TestCase):
         wke = WeightedKraskovEstimator(data)
 
         mi1 = wke.calculate_mi(k=50)
-        mi2 = mi_kraskov(data=data, k=50)
+        mi2 = simple_calculate_mi(data=data, k=50)
 
         self.assertAlmostEqual(mi1, 1, delta=0.03)
         self.assertAlmostEqual(mi1, mi2, delta=0.005)
@@ -54,7 +54,7 @@ class TestEstimator(unittest.TestCase):
         wke = WeightedKraskovEstimator(data)
 
         mi1 = wke.calculate_mi(k=100)
-        mi2 = mi_kraskov(data=data, k=100)
+        mi2 = simple_calculate_mi(data=data, k=100)
         mi3 = -(np.log2(2/3)*2/3 + np.log2(1/3)*1/3)
 
         self.assertAlmostEqual(mi1, mi3, delta=0.02)
@@ -68,7 +68,7 @@ class TestEstimator(unittest.TestCase):
         wke = WeightedKraskovEstimator(data)
 
         mi1 = wke.calculate_mi(k=50)
-        mi2 = mi_kraskov(data=data, k=50)
+        mi2 = simple_calculate_mi(data=data, k=50)
         mi3 = -(np.log2(2/3)*2/3 + np.log2(1/3)*1/3)
 
         self.assertAlmostEqual(mi1, mi3, delta=0.02)

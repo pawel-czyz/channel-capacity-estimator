@@ -21,7 +21,7 @@ Module **cce** features the research article "Limits to channel information
 capacity for a MAPK pathway in response to pulsatile EGF stimulation" by 
 Grabowski *et al.*, submitted to *PLOS Computational Biology* in 2018. Version
 1.0 of the code has been included as supplementary data of the article. For any
-updates and fixes, visit project homepage: http://pmbm.ippt.pan.pl/software/cce .
+updates and fixes, visit project homepage: http://pmbm.ippt.pan.pl/software/cce 
 (which currently directs to a GitHub repository 
 https://github.com/pawel-czyz/channel-capacity-estimator).
 
