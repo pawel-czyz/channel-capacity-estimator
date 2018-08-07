@@ -2,32 +2,34 @@
 Channel Capacity Estimator
 ==========================
 
-Channel Capacity Estimator (**CCE**) is a python module to estimate 
+Channel Capacity Estimator (**cce**) is a python module to estimate 
 `information capacity`_ of a communication channel. Mutual 
 information, computed as proposed by Kraskov *et al.* [Crossref_, arXiv_], 
 is maximized over input probabilities by means of a constrained 
 gradient-based stochastic optimization. The only parameter of the Kraskov 
 algorithm is the number of neighbors, *k*, used in the nearest neighbor 
-search. In **CCE**, channel input is expected to be of categorical type 
+search. In **cce**, channel input is expected to be of categorical type 
 (meaning that it should be described by labels), whereas channel output
 is assumed to be in the form of points in real space any dimensionality. 
 
 The code performs gradient optimization according to ADAM algorithm 
-implemented in TensorFlow_. Thus, to use **CCE**, you should have 
+as implemented in TensorFlow_. Thus, to use **cce**, you should have 
 TensorFlow (with python bindings) installed on your system. See file
 requirements.txt for a full list of dependencies.
 
-**CCE** features the article "Limits to channel information capacity for 
+**cce** features the article "Limits to channel information capacity for 
 a MAPK pathway in response to pulsatile EGF stimulation" by Grabowski 
 *et al.*, submitted to *PLOS Computational Biology* in 2018. Version 1.0 
 of the code has been included as supplementary data of the article. 
-For any updates and fixes, check out the repository
-https://github.com/pawel-czyz/channel-capacity-estimator .
+For any updates and fixes, please visit project homepage 
+http://pmbm.ippt.pan.pl/software/cce
+(which currently directs to a GitHub repository 
+https://github.com/pawel-czyz/channel-capacity-estimator).
 
 Usage
 -----
 
-There are three major use cases of CCE:
+There are three major use cases of **cce**:
 
 1. Calculation of mutual information (for equiprobable input distributions).
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -127,7 +129,7 @@ Then, you can directly start using the package:
     >>> from cce import WeightedKraskovEstimator
     >>> ...
 
-To launch a suite of unit tests, run:
+The same Makefile can be used to launch a suite of unit tests:
 
 .. code:: bash
 

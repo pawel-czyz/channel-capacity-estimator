@@ -8,15 +8,15 @@ def readme():
 setup(
     name='channel-capacity-estimator',
     version='1.0.0',
-    description='Package estimating channel capacity.',
-    url='todo',
-    author='Frederic Grabowski, Pawel Czyz, Marek Kochanczyk, Tomasz Lipniacki',
+    description='Package for estimation of information channel capacity.',
+    url='http://pmbm.ippt.pan.pl/software/cce',
+    author='Frederic Grabowski, Pawel Czyz',
     author_email='grabowski.frederic@gmail.com, pczyz@protonmail.com',
-    license='BSD 3-Clause License',
+    license='GNU GPL 3.0 license',
     packages=['cce'],
-    install_requires=['numpy', 'tensorflow', 'scipy'],
+    install_requires=['numpy', 'scipy', 'tensorflow'],
 
-    # if anybody wants to add non-py files, he must uncomment the following line and add them in MANIFEST.in
+    # if anybody wants to add non-py files, s/he must uncomment the following line and add them in MANIFEST.in
     # include_package_data=True
     zip_safe=False
 )
