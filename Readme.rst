@@ -5,7 +5,7 @@ Channel Capacity Estimator
 Channel Capacity Estimator (**cce**) is a python module to estimate 
 `information capacity`_ of a communication channel. Mutual 
 information, computed as proposed by Kraskov *et al.* [Crossref_, arXiv_], 
-is maximized over input probabilities by means of a constrained 
+(Eq. 8), is maximized over input probabilities by means of a constrained 
 gradient-based stochastic optimization. The only parameter of the Kraskov 
 algorithm is the number of neighbors, *k*, used in the nearest neighbor 
 search. In **cce**, channel input is expected to be of categorical type 
@@ -15,14 +15,13 @@ is assumed to be in the form of points in real space any dimensionality.
 The code performs gradient optimization according to ADAM algorithm 
 as implemented in TensorFlow_. Thus, to use **cce**, you should have 
 TensorFlow (with python bindings) installed on your system. See file
-requirements.txt for a full list of dependencies.
+requirements.txt for a complete list of dependencies.
 
-**cce** features the article "Limits to channel information capacity for 
-a MAPK pathway in response to pulsatile EGF stimulation" by Grabowski 
-*et al.*, submitted to *PLOS Computational Biology* in 2018. Version 1.0 
-of the code has been included as supplementary data of the article. 
-For any updates and fixes, please visit project homepage 
-http://pmbm.ippt.pan.pl/software/cce
+**cce** features the research article "Limits to channel information capacity
+for a MAPK pathway in response to pulsatile EGF stimulation" by Grabowski 
+*et al.*, submitted to *PLOS Computational Biology* in 2018. Version 1.0 of 
+the code has been included as supplementary data of the article. For any updates
+and fixes visit project homepage: http://pmbm.ippt.pan.pl/software/cce .
 (which currently directs to a GitHub repository 
 https://github.com/pawel-czyz/channel-capacity-estimator).
 
