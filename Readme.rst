@@ -5,23 +5,23 @@ Channel Capacity Estimator
 Channel Capacity Estimator (**cce**) is a python module to estimate 
 `information capacity`_ of a communication channel. Mutual 
 information, computed as proposed by Kraskov *et al.* [Crossref_, arXiv_], 
-(Eq. 8), is maximized over input probabilities by means of a constrained 
+Eq. (8), is maximized over input probabilities by means of a constrained 
 gradient-based stochastic optimization. The only parameter of the Kraskov 
 algorithm is the number of neighbors, *k*, used in the nearest neighbor 
 search. In **cce**, channel input is expected to be of categorical type 
 (meaning that it should be described by labels), whereas channel output
-is assumed to be in the form of points in real space any dimensionality. 
+is assumed to be in the form of points in real space of any dimensionality. 
 
 The code performs gradient optimization according to ADAM algorithm 
 as implemented in TensorFlow_. Thus, to use **cce**, you should have 
 TensorFlow (with python bindings) installed on your system. See file
 requirements.txt for a complete list of dependencies.
 
-**cce** features the research article "Limits to channel information capacity
-for a MAPK pathway in response to pulsatile EGF stimulation" by Grabowski 
-*et al.*, submitted to *PLOS Computational Biology* in 2018. Version 1.0 of 
-the code has been included as supplementary data of the article. For any updates
-and fixes visit project homepage: http://pmbm.ippt.pan.pl/software/cce .
+Module **cce** features the research article "Limits to channel information 
+capacity for a MAPK pathway in response to pulsatile EGF stimulation" by 
+Grabowski *et al.*, submitted to *PLOS Computational Biology* in 2018. Version
+1.0 of the code has been included as supplementary data of the article. For any
+updates and fixes, visit project homepage: http://pmbm.ippt.pan.pl/software/cce .
 (which currently directs to a GitHub repository 
 https://github.com/pawel-czyz/channel-capacity-estimator).
 
@@ -100,9 +100,7 @@ input distributions:
               +label_all_with('B', mvn(mean=(1,1)).rvs(10000)) \
               +label_all_with('C', mvn(mean=(3,3)).rvs(10000))
     >>>
-    >>> estimator = wke(data)
-    >>> estimator.calculate_neighborhood(k=50)
-    >>> estimator.optimize_weights()
+    >>> wke(data).calculate_maximized_mi(k=50)
     (0.98616722147976, {'A': 0.38123083, 'B': 0.16443817, 'C': 0.45433092})
 
 The output tuple contains the maximized mutual information (channel capacity) 
