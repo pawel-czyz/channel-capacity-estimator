@@ -1,28 +1,33 @@
 import numpy as np
 
 
-def generate_teddybears(production_plan, fluffiness, precision=0.01):
-    """Creates a list of pairs (plushie, [fluffiness])
+def generate_teddybears(production_plan: dict, fluffiness: dict, sigma: float = 0.01) -> list:
+    """Creates a list of pairs (plushie, [fluffiness]).
+
+    An information channel can be treated as a device changing non-deterministically labels X (called plushies) into
+    measured value Y (called fluffiness). Mutual information measures how much information about plushies we
+    can retrieve just by observing fluffiness.
+    For each plushie we generate fluffiness randomly around a given target value.
 
     Parameters
     ----------
-    production_plan : dictionary (label, int)
-        dictionary of plushies -> amount created
+    production_plan : dict
+        dictionary of plushies (str or int) -> amount created (int)
 
-    fluffiness : dictionary (label, float)
-        dictionary of plushies -> target fluffiness
+    fluffiness : dict (label, float)
+        dictionary of plushies (str or int) -> target fluffiness (float)
 
-    precision : float
-        precision of fluffiness production
+    sigma : float
+        positive parameter resulting non-deterministic error to fluffiness around the mean value
 
     Returns
     -------
     list
         list of pairs describing created plushies. Example:
         [
-            ('black_teddy',  0.001),
-            ('black_teddy', -0.001),
-            ('white_teddy', -0.002),
+            ('black_teddy', [0.001]),
+            ('black_teddy', [-0.001]),
+            ('white_teddy', [-0.002]),
             ...
         ]
     """
@@ -30,8 +35,8 @@ def generate_teddybears(production_plan, fluffiness, precision=0.01):
     for plushie, quantity in production_plan.items():
         for _ in range(quantity):
             outcome_fluffiness = (
-                    fluffiness[plushie] +
-                    precision * np.random.normal()
+                fluffiness[plushie] +
+                sigma * np.random.normal()
             )
             delivery.append(
                 (plushie, [outcome_fluffiness])        
@@ -39,14 +44,17 @@ def generate_teddybears(production_plan, fluffiness, precision=0.01):
     return delivery
 
 
-if __name__ == "__main__":
+def example():  # pragma: no cover
+    """In this example we create a list with 30 plushies - 10 of each kind. There are two colors of teddybears,
+    both have the same fluffiness, so some information is lost. We expect that teddybears can be distinguished
+    from a bunny, unless `sigma` is very high. In such case fluffiness would not give any information."""
     print("Extra cute example")
     print("******************")
     print("\n\nProduction")
     prod_plan = {
         "black_teddy": 10,
         "white_teddy": 10,
-        "giant_bunny": 10
+        "giant_bunny": 10,
     }
     for k, v in prod_plan.items():
         print(k, ":", v)
@@ -55,11 +63,11 @@ if __name__ == "__main__":
     fluff = {
         "black_teddy": 0.,
         "white_teddy": 0.,
-        "giant_bunny": 1.
+        "giant_bunny": 1.,
     }
     for k, v in fluff.items():
         print(k, ":", v)
 
     print("\n\nEffect")
-    for u in generate_teddybears(prod_plan, fluff, 1e-4):
+    for u in generate_teddybears(prod_plan, fluff, sigma=1e-4):
         print(u)
