@@ -6,39 +6,40 @@ Channel Capacity Estimator (**CCE**) is a python module to estimate
 `information capacity`_ of a communication channel. Mutual 
 information, computed as proposed by Kraskov *et al.* [Crossref_, arXiv_], 
 is maximized over input probabilities by means of a constrained 
-gradient-based stochastic optimization. Channel input is expected
-to be of categorical type (labels), whereas channel output is assumed
-to be in the form of points in space any dimensionality. The only 
-parameter of the algorithm is the number of neighbors, *k*, used 
-in the nearest neighbor search.
+gradient-based stochastic optimization. The only parameter of the Kraskov 
+algorithm is the number of neighbors, *k*, used in the nearest neighbor 
+search. In **CCE**, channel input is expected to be of categorical type 
+(meaning that it should be described by labels), whereas channel output
+is assumed to be in the form of points in real space any dimensionality. 
 
-This source code feature the article "Limits to channel information
-capacity for a MAPK pathway in response to pulsatile EGF stimulation"
-by Grabowski *et al.*, submitted to PLOS Computational Biology in 2018.
-Version 1.0 of the code has been included as supplementary data of the
-article. For any updates and fixes, please check out the repository
+The code performs gradient optimization according to ADAM algorithm 
+implemented in TensorFlow_. Thus, to use **CCE**, you should have 
+TensorFlow (with python bindings) installed on your system. See file
+requirements.txt for a full list of dependencies.
+
+**CCE** features the article "Limits to channel information capacity for 
+a MAPK pathway in response to pulsatile EGF stimulation" by Grabowski 
+*et al.*, submitted to *PLOS Computational Biology* in 2018. Version 1.0 
+of the code has been included as supplementary data of the article. 
+For any updates and fixes, check out the repository
 https://github.com/pawel-czyz/channel-capacity-estimator .
-
-The code performs gradient optimization with the help of the ADAM
-algorithm implementation provided in TensorFlow_. Thus, to use **CCE**,
-you should have TensorFlow (with python bindings) installed on your system.
-
 
 Usage
 -----
 
 There are three major use cases of CCE:
 
-1. **Calculation of mutual information (for equiprobable input distributions).**
+1. Calculation of mutual information (for equiprobable input distributions).
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  In the example below, mutual information is calculated between three sets 
-  of points drawn at random from two-dimensional gaussian distributions,
-  located at (0,0), (1,1), and at (3,3) (in scipy, covariance matrices of 
-  all three distributions are identity matrices by default). Auxiliary 
-  function `label_all_with` helps to prepare the list of all points, 
-  in which each point is labeled according to its distribution of origin.
+In the example below, mutual information is calculated between three sets 
+of points drawn at random from two-dimensional Gaussian distributions,
+located at (0,0), (1,1), and at (3,3) (in SciPy, covariance matrices of 
+all three distributions  by default are identity matrices). Auxiliary 
+function `label_all_with` helps to prepare the list of all points, in 
+which each point is labeled according to its distribution of origin.
 
-  .. code:: python
+.. code:: python
 
     >>> from scipy.stats import multivariate_normal as mvn
     >>> from cce import WeightedKraskovEstimator as wke
@@ -52,22 +53,23 @@ There are three major use cases of CCE:
     >>> wke(data).calculate_mi(k=50)
     0.9386627422798913
 
-  Probabilities of input distributions, henceforth referred to as *weights*,
-  by default are assumed to be equal for all input distributions. Format of 
-  data is akin to [('A', array([-0.4, 2.8])), ('A', array([-0.9, -0.1])), ..., ('B', array([1.7, 0.9])), ..., ('C', array([3.2, 3.3])), ...).
-  Entries of data are not required to be grouped according to the label.
-  Instead of numpy arrays, ordinary lists with coordinates will be also 
-  accepted. Distribution labels can be given as strings, not just single
-  characters. (This example involves random numbers, so your result may 
-  vary slightly.)
+In this example, probabilities of input distributions, henceforth referred
+to as *weights*, are assumed to be equal for all input distributions. Format
+of data is akin to [('A', array([-0.4, 2.8])), ('A', array([-0.9, -0.1])), ..., ('B', array([1.7, 0.9])), ..., ('C', array([3.2, 3.3])), ...).
+Entries of data are not required to be grouped according to the label.
+Distribution labels can be given as strings, not just single characters. 
+Instead of NumPy arrays, ordinary lists with coordinates will be also 
+accepted. (This example involves random numbers, so your result may vary
+slightly.)
 
 
-2. **Calculation of mutual information for input distributions with non-equal probabilities.**
+2. Calculation of mutual information for input distributions with non-equal probabilities.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-  This example is structured as above, with an addition of weights of each 
-  input distributions:
+This example is structured as above, with an addition of weights of each 
+input distributions:
 
-  .. code:: python
+.. code:: python
 
     >>> from scipy.stats import multivariate_normal as mvn
     >>> from cce import WeightedKraskovEstimator as wke
@@ -82,11 +84,13 @@ There are three major use cases of CCE:
     >>> wke(data).calculate_weighted_mi(weights=weights, k=50)
     0.9420502318804324  
 
-  (This example involves random numbers, so your result may vary slightly.)
+(This example involves random numbers, so your result may vary slightly.)
 
-3. **Estimation of channel capacity by maximizing MI with respect to input weights.**
 
-  .. code:: python
+3. Estimation of channel capacity by maximizing MI with respect to input weights.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: python
 
     >>> from scipy.stats import multivariate_normal as mvn
     >>> from cce import WeightedKraskovEstimator as wke
@@ -100,16 +104,16 @@ There are three major use cases of CCE:
     >>> estimator.optimize_weights()
     (0.98616722147976, {'A': 0.38123083, 'B': 0.16443817, 'C': 0.45433092})
 
-  The output tuple contains the maximized mutual information (channel capacity) 
-  and probabilities of input distributions that maximize mutual information (argmax). 
-  Optimization is performed within TensorFlow with multiple threads and takes 
-  less than a minute on a quad-core processor.
-  (This example involves random numbers, so your result may vary slightly.)
+The output tuple contains the maximized mutual information (channel capacity) 
+and probabilities of input distributions that maximize mutual information (argmax). 
+Optimization is performed within TensorFlow with multiple threads and takes 
+less than a minute on a quad-core processor.
+(This example involves random numbers, so your result may vary slightly.)
 
 
 Installation
 ------------
-To install, run
+To install **CCE** locally via pip, run:
 
 .. code:: bash
 
@@ -123,7 +127,7 @@ Then, you can directly start using the package:
     >>> from cce import WeightedKraskovEstimator
     >>> ...
 
-or run unit tests:
+To launch a suite of unit tests, run:
 
 .. code:: bash
 
@@ -156,3 +160,4 @@ This software is distributed under `GNU GPL 3.0 license`_.
 .. _Laboratory of Modeling in Biology and Medicine: http://pmbm.ippt.pan.pl
 .. _Institute of Fundamental Technological Reasearch, Polish Academy of Sciences: http://www.ippt.pan.pl
 .. _GNU GPL 3.0 license: https://www.gnu.org/licenses/gpl-3.0.html
+
