@@ -22,7 +22,7 @@ capacity for a MAPK pathway in response to pulsatile EGF stimulation" by
 Grabowski *et al.*, submitted to *PLOS Computational Biology* in 2018. Version
 1.0 of the code has been included as supplementary data of the article. For any
 updates and fixes, visit project homepage: http://pmbm.ippt.pan.pl/software/cce 
-(which currently directs to a GitHub repository 
+(which currently directs to a GitHub repository:
 https://github.com/pawel-czyz/channel-capacity-estimator).
 
 Usage
@@ -96,6 +96,8 @@ input distributions:
     >>> from scipy.stats import multivariate_normal as mvn
     >>> from cce import WeightedKraskovEstimator as wke
     >>>
+    >>> def label_all_with(label, values): return [(label, v) for v in values]
+    >>>
     >>> data = label_all_with('A', mvn(mean=(0,0)).rvs(10000)) \
               +label_all_with('B', mvn(mean=(1,1)).rvs(10000)) \
               +label_all_with('C', mvn(mean=(3,3)).rvs(10000))
@@ -138,8 +140,9 @@ Authors
 
 The code was developed by `Frederic Grabowski`_ and `Paweł Czyż`_,
 with some guidance from `Marek Kochańczyk`_ and under supervision of 
-`Tomasz Lipniacki`_ from the `Laboratory of Modeling in Biology and Medicine`_
-at the `Institute of Fundamental Technological Reasearch, Polish Academy of Sciences`_.
+`Tomasz Lipniacki`_ from the `Laboratory of Modeling in Biology and Medicine`_,
+`Institute of Fundamental Technological Reasearch, Polish Academy of Sciences`_
+in Warsaw.
 
 
 License
