@@ -1,5 +1,5 @@
 """Weighted Kraskov estimator"""
-from cce.dataeng import normalise, stir_norm
+from cce.preprocess import normalize, add_noise
 from cce.optimize_weights import weight_optimizer
 from cce.calculate_weighted_loss import weight_loss
 from scipy.spatial import cKDTree
@@ -77,13 +77,13 @@ class WeightedKraskovEstimator:
         """
 
         # Normalise the data
-        normalised_data = normalise(data)
+        normalized_data = normalize(data)
 
         # Add small peturbation to the data
-        normalised_data = stir_norm(normalised_data)
+        normalized_data = add_noise(normalized_data)
 
         # Sort data for better branch prediction.
-        # normalised_data = sorted(normalised_data, key=hash)
+        # normalized_data = sorted(normalized_data, key=hash)
         # `immersed_data` is a list of Euclidean points: [ [label_real, coordinate_1, coordinate_2, ...], ... ]
         immersed_data = []
         # `index` is a unique int for every label. It will have values 0, 1, 2, ...
@@ -91,7 +91,7 @@ class WeightedKraskovEstimator:
         # We want to build array of labels in this step
         label_array_tmp = []
 
-        for label, value in normalised_data:
+        for label, value in normalized_data:
             # If it is the first time we see this label, we create a new category for it.
             if label not in self._label2index:
                 self._label2index[label] = index

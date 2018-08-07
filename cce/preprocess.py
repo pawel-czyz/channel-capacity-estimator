@@ -1,7 +1,6 @@
-"""Data engineering functions, as adding some dust or normalisation"""
-import numpy as np
+"""Input data preprocessing functions"""
 
-np.random.seed(98 + 105 + 111)
+import numpy as np
 
 
 def _project_labels(data: list) -> list:
@@ -12,35 +11,36 @@ def _project_coords(data: list) -> list:
     return [x[1] for x in data]
 
 
-def normalise(data: list) -> list:
-    """Data normalisation
+def normalize(data: list) -> list:
+    """Perform input data normalization
 
     Parameters
     ----------
     data : list
-        data is a list of tuples. Each tuples has form (label, value), where label can be either int or string
-        and value is a one-dimensional numpy array/list representing coordinates
+        data is a list of tuples. Each tuple has form (label, value),
+        where label can be either int or string and value is a
+        one-dimensional numpy array/list representing coordinates.
 
     Returns
     -------
     list
-        list of data points. Each data point is normalised, what means that each coordinate is in the interval
-        [0, 1]
+        list of data points. Each data point is normalized to interval
+        [0, 1].
     """
     lab = _project_labels(data)
     arr = _project_coords(data)
     arr = np.array(arr)
 
-    b = np.amax(arr)
-    a = np.amin(arr)
+    max_ = np.amax(arr)
+    min_ = np.amin(arr)
 
-    arr = (arr-a) / (b-a)
+    arr = (arr - min_)/(max_ - min_)
 
     return list(zip(lab, arr))
 
 
 def unique(arr) -> bool:
-    """Checks if array of coordinate points has all points unique.
+    """Check if all points in the array of coordinates are unique.
 
     Parameters
     ----------
@@ -55,8 +55,8 @@ def unique(arr) -> bool:
     return len(arr) == len({tuple(p) for p in arr})
 
 
-def stir_norm(data: list) -> list:
-    """Stirs normalised data
+def add_noise(data: list) -> list:
+    """Add noise to input data
 
     Parameters
     ----------
@@ -66,15 +66,14 @@ def stir_norm(data: list) -> list:
     Returns
     -------
     list
-        data but with added noise
+        data with added noise
     """
 
     lab, arr = _project_labels(data), _project_coords(data)
     arr = np.array(arr)
     if not unique(arr):
         print("WARNING: data contains points that are not unique.",
-              "This is known to cause numerical issues.",
-              "Slightly perturbating data...")
+              "Data will be perturbed to avoid numerical issues.")
         eps = min(filter(lambda x: x > 0,
                          {x for x in np.ndarray.flatten(arr)}))
         eps /= 2
@@ -84,7 +83,7 @@ def stir_norm(data: list) -> list:
             eps /= 2
             arr += eps * np.random.rand(*arr.shape)
             if eps == 0.:
-                raise Exception("Data normalisation failed. Points cannot be stirred properly.")
+                raise Exception("Cannot add noise to input data.")
         print("eps used:", eps)
-        
+
     return list(zip(lab, arr))
