@@ -74,6 +74,25 @@ class WeightedKraskovEstimator:
             self.load(data)
 
 
+    def calculate_maximized_mi(self, k: int = _DEF_K):
+        """High-level function calculating maximal MI.
+
+        Parameters
+        ----------
+        k : int
+            free parameter in Kraskov estimator
+
+        Returns
+        -------
+        float
+            optimized MI, in bits
+        dict
+            dictionary mapping labels to weights
+        """
+        self.calculate_neighborhoods(k=k)
+        return self.optimize_weights()
+
+
     def load(self, data: list):
         """Loads data into the structure.
 
@@ -265,7 +284,13 @@ class WeightedKraskovEstimator:
 
 
     def calculate_neighborhoods(self, k: int = _DEF_K):
-        """Function that prepares neighborhood_array."""
+        """Function that prepares neighborhood_array.
+
+        Parameters
+        ----------
+        k : int
+            free parameter in Kraskov estimator
+        """
         self._check_if_data_are_loaded()
 
         # If the data nor neighborhood specification haven't changed,

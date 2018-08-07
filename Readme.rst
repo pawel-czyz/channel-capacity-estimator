@@ -48,8 +48,8 @@ which each point is labeled according to its distribution of origin.
     >>> def label_all_with(label, values): return [(label, v) for v in values]
     >>>
     >>> data = label_all_with('A', mvn(mean=(0,0)).rvs(10000)) \
-              +label_all_with('B', mvn(mean=(1,1)).rvs(10000)) \
-              +label_all_with('C', mvn(mean=(3,3)).rvs(10000)) 
+             + label_all_with('B', mvn(mean=(1,1)).rvs(10000)) \
+             + label_all_with('C', mvn(mean=(3,3)).rvs(10000))
     >>>
     >>> wke(data).calculate_mi(k=50)
     0.9386627422798913
@@ -78,8 +78,8 @@ input distributions:
     >>> def label_all_with(label, values): return [(label, v) for v in values]
     >>>
     >>> data = label_all_with('A', mvn(mean=(0,0)).rvs(10000)) \
-              +label_all_with('B', mvn(mean=(1,1)).rvs(10000)) \
-              +label_all_with('C', mvn(mean=(3,3)).rvs(10000))
+             + label_all_with('B', mvn(mean=(1,1)).rvs(10000)) \
+             + label_all_with('C', mvn(mean=(3,3)).rvs(10000))
     >>>
     >>> weights = {'A': 3/6, 'B': 1/6, 'C': 2/6}
     >>> wke(data).calculate_weighted_mi(weights=weights, k=50)
@@ -99,8 +99,8 @@ input distributions:
     >>> def label_all_with(label, values): return [(label, v) for v in values]
     >>>
     >>> data = label_all_with('A', mvn(mean=(0,0)).rvs(10000)) \
-              +label_all_with('B', mvn(mean=(1,1)).rvs(10000)) \
-              +label_all_with('C', mvn(mean=(3,3)).rvs(10000))
+             + label_all_with('B', mvn(mean=(1,1)).rvs(10000)) \
+             + label_all_with('C', mvn(mean=(3,3)).rvs(10000))
     >>>
     >>> wke(data).calculate_maximized_mi(k=50)
     (0.98616722147976, {'A': 0.38123083, 'B': 0.16443817, 'C': 0.45433092})
