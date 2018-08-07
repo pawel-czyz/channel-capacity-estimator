@@ -13,7 +13,7 @@ class TestWeightOptimizer(unittest.TestCase):
         fluf = {"teddy": 0, "bunny": 1}
         data = generate_teddybears(prod, fluf, 0.0001)
         wke = WeightedKraskovEstimator(data)
-        wke.calculate_neighborhood(k=10)
+        wke.calculate_neighborhoods(k=10)
         mi, ws = wke.optimize_weights()
         self.assertAlmostEqual(mi, 1, delta=0.01)
         self.assertAlmostEqual(ws["teddy"], 0.50, delta=0.01)
@@ -26,7 +26,7 @@ class TestWeightOptimizer(unittest.TestCase):
         fluf = {"teddy": 0, "bunny": 1}
         data = generate_teddybears(prod, fluf, 0.0001)
         wke = WeightedKraskovEstimator(data)
-        wke.calculate_neighborhood(k=10)
+        wke.calculate_neighborhoods(k=10)
         mi, ws = wke.optimize_weights()
         self.assertAlmostEqual(mi, 1, delta=0.01)
         self.assertAlmostEqual(ws["teddy"], 0.50, delta=0.01)
@@ -39,7 +39,7 @@ class TestWeightOptimizer(unittest.TestCase):
         fluf = {"teddy_black": 0, "teddy_brown": 0, "bunny": 1}
         data = generate_teddybears(prod, fluf, 0.0001)
         wke = WeightedKraskovEstimator(data)
-        wke.calculate_neighborhood(k=10)
+        wke.calculate_neighborhoods(k=10)
         mi, ws = wke.optimize_weights()
         self.assertAlmostEqual(mi, 1, delta=0.01)
         self.assertAlmostEqual(ws["bunny"], 0.50, delta=0.01)

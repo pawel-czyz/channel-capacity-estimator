@@ -111,6 +111,13 @@ Optimization is performed within TensorFlow with multiple threads and takes
 less than a minute on a quad-core processor.
 (This example involves random numbers, so your result may vary slightly.)
 
+Testing
+-------
+To launch a suite of unit tests run:
+
+.. code:: bash
+
+    $ make test
 
 Installation
 ------------
@@ -128,11 +135,7 @@ Then, you can directly start using the package:
     >>> from cce import WeightedKraskovEstimator
     >>> ...
 
-The same Makefile can be used to launch a suite of unit tests:
 
-.. code:: bash
-
-    $ make test
 
 
 Authors

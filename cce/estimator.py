@@ -161,7 +161,7 @@ class WeightedKraskovEstimator:
             mutual information in bits
         """
         n = self._number_of_points_total
-        self.calculate_neighborhood(k=k)
+        self.calculate_neighborhoods(k=k)
 
         # Calculate the number of points in neighborhood.
         n_y = self.neighborhood_array.sum(axis=1)
@@ -191,9 +191,13 @@ class WeightedKraskovEstimator:
         float
             mutual information in bits
         """
-        self.calculate_neighborhood(k=k)
+        self.calculate_neighborhoods(k=k)
 
         w_list = [weights[self._index2label[i]] for i in range(self._number_of_labels)]
+
+        # Check whether weights sum up to (almost) 1
+        if abs(sum(w_list) - 1) > 0.01:
+            raise ValueError("Weights should sum up to 1.")
 
         loss = weight_loss(neighb_count=self.neighborhood_array,
                            labels=self.label_array, weights=w_list)
@@ -205,7 +209,7 @@ class WeightedKraskovEstimator:
         return optimized_mi / np.log(2)
 
 
-    def optimize_weights(self) -> (float, dict):
+    def optimize_weights(self) -> tuple:
         """Function optimizing weights using weight_optimizer.
 
         Returns
@@ -216,7 +220,7 @@ class WeightedKraskovEstimator:
             dictionary mapping labels to weights
         """
         if self._new_data_loaded:
-            raise Exception("New data have been loaded.")
+            raise Exception("New data have been loaded. You need to invoke calculate_neighborhoods().")
 
         # Get loss and best weights from TensorFlow.
         loss, w = weight_optimizer(neighb_count=self.neighborhood_array,
@@ -260,7 +264,7 @@ class WeightedKraskovEstimator:
         return neigh_list
 
 
-    def calculate_neighborhood(self, k: int = _DEF_K):
+    def calculate_neighborhoods(self, k: int = _DEF_K):
         """Function that prepares neighborhood_array."""
         self._check_if_data_are_loaded()
 
