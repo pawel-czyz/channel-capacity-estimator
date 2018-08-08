@@ -1,5 +1,6 @@
-"""This is a concise implementation of the Kraskov algorithm.
-It is intended to be used for reference in unit tests only."""
+"""This is a concise implementation of the Kraskov algorithm for 
+multidimensional distributions, devoid of optimization capabilities,
+intended to be used only in unit tests."""
 
 from collections import Counter
 from numpy import log, mean, random, abs
@@ -38,10 +39,7 @@ def _project_on_signal(datum):
     return datum[0]
 
 
-def simple_calculate_mi(data, k=100):
-    """Expects the data to be a list of points that look like:
-       ("0101..1", [float, float, ...])
-    """
+def calculate_mi(data, k):
     data = _add_noise(data)
     n = len(data)
     immersed_data = list(map(_immerse, data))
