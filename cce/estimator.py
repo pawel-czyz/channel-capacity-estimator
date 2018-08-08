@@ -2,7 +2,7 @@
 # licenced under GNU GPL 3 (see file License.txt).
 # Homepage: http://pmbm.ippt.pan.pl/software/cce 
 
-"""Weighted Kraskov estimator"""
+"""Kraskov estimator for weighted input distributions"""
 
 from collections import defaultdict
 from scipy.spatial import cKDTree
@@ -11,9 +11,6 @@ import numpy as np
 from cce.preprocess import normalize, add_noise_if_duplicates
 from cce.optimize import weight_optimizer
 from cce.score import weight_loss
-
-# default number of neighbors
-_DEF_K = 100
 
 
 class WeightedKraskovEstimator:
@@ -74,7 +71,7 @@ class WeightedKraskovEstimator:
             self.load(data)
 
 
-    def calculate_maximized_mi(self, k: int = _DEF_K):
+    def calculate_maximized_mi(self, k: int):
         """High-level function calculating maximal MI.
 
         Parameters
@@ -166,7 +163,7 @@ class WeightedKraskovEstimator:
             raise Exception("Data have not been loaded yet.")
 
 
-    def calculate_mi(self, k: int = _DEF_K) -> float:
+    def calculate_mi(self, k: int) -> float:
         """Calculates MI using Kraskov estimation using previously loaded data.
 
         Parameters
@@ -194,7 +191,7 @@ class WeightedKraskovEstimator:
         return (digamma(k) + digamma(n) - digammas.mean()) / np.log(2)
 
 
-    def calculate_weighted_mi(self, weights: dict, k: int = _DEF_K) -> float:
+    def calculate_weighted_mi(self, weights: dict, k: int) -> float:
         """Calculates mutual information for weighted input in bits.
 
         Parameters
@@ -283,7 +280,7 @@ class WeightedKraskovEstimator:
         return neigh_list
 
 
-    def calculate_neighborhoods(self, k: int = _DEF_K):
+    def calculate_neighborhoods(self, k: int):
         """Function that prepares neighborhood_array.
 
         Parameters
