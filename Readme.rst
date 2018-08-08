@@ -20,10 +20,16 @@ requirements.txt for a complete list of dependencies.
 Module **cce** features the research article "Limits to channel information 
 capacity for a MAPK pathway in response to pulsatile EGF stimulation" by 
 Grabowski *et al.*, submitted to *PLOS Computational Biology* in 2018. Version
-1.0 of the code has been included as supplementary data of the article. For any
-updates and fixes, visit project homepage: http://pmbm.ippt.pan.pl/software/cce 
+1.0 of the code has been included as supplementary data of this article. 
+A prototypical implementation of the approach implemented in **cce** has 
+appeared earlier, supplementing the article by Tudelska *et al.*
+(`*Scientific Reports*, 2017`_).
+
+For any updates and fixes to **cce**, visit project homepage:`
+http://pmbm.ippt.pan.pl/software/cce 
 (which currently directs to a GitHub repository:
 https://github.com/pawel-czyz/channel-capacity-estimator).
+
 
 Usage
 -----
@@ -121,7 +127,7 @@ To launch a suite of unit tests run:
 
 Installation
 ------------
-To install **CCE** locally via pip, run:
+To install **cce** locally via pip, run:
 
 .. code:: bash
 
@@ -156,7 +162,8 @@ This software is distributed under `GNU GPL 3.0 license`_.
 
 .. _information capacity: https://en.wikipedia.org/wiki/Channel_capacity
 .. _arXiv:    https://arxiv.org/pdf/cond-mat/0305641.pdf
-.. _CrossRef: https://doi.org/10.1103/PhysRevE.69.066138
+.. _Crossref: https://doi.org/10.1103/PhysRevE.69.066138
+.. _*Scientific Reports*, 2017: https://doi.org/10.1038/s41598-017-16166-y
 .. _TensorFlow:       https://www.tensorflow.org
 .. _Frederic Grabowski: https://github.com/grfrederic
 .. _Paweł Czyż: https://github.com/pawel-czyz
