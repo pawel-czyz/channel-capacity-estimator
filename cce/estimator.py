@@ -9,8 +9,8 @@ from scipy.spatial import cKDTree
 from scipy.special import digamma
 import numpy as np
 from cce.preprocess import normalize, add_noise_if_duplicates
-from cce.optimize_weights import weight_optimizer
-from cce.calculate_weighted_loss import weight_loss
+from cce.optimize import weight_optimizer
+from cce.score import weight_loss
 
 # default number of neighbors
 _DEF_K = 100
