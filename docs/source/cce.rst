@@ -4,18 +4,18 @@ cce package
 Submodules
 ----------
 
-cce\.calculate\_weighted\_loss module
--------------------------------------
+cce\.score module
+-----------------
 
-.. automodule:: cce.calculate_weighted_loss
+.. automodule:: cce.score
     :members:
     :undoc-members:
     :show-inheritance:
 
-cce\.dataeng module
--------------------
+cce\.preprocess module
+----------------------
 
-.. automodule:: cce.dataeng
+.. automodule:: cce.preprocess
     :members:
     :undoc-members:
     :show-inheritance:
@@ -28,10 +28,10 @@ cce\.estimator module
     :undoc-members:
     :show-inheritance:
 
-cce\.optimize\_weights module
------------------------------
+cce\.optimize module
+--------------------
 
-.. automodule:: cce.optimize_weights
+.. automodule:: cce.optimize
     :members:
     :undoc-members:
     :show-inheritance:

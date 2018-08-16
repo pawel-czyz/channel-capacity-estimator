@@ -3,8 +3,8 @@ Channel Capacity Estimator
 ==========================
 
 Channel Capacity Estimator (**cce**) is a python module to estimate 
-`information capacity`_ of a communication channel. Mutual 
-information, computed as proposed by Kraskov *et al.* [Crossref_, arXiv_], 
+`information capacity`_ of a communication channel. Mutual information,
+computed as proposed by `Kraskov et al.` (*Physical Review E*, 2004)
 Eq. (8), is maximized over input probabilities by means of a constrained 
 gradient-based stochastic optimization. The only parameter of the Kraskov 
 algorithm is the number of neighbors, *k*, used in the nearest neighbor 
@@ -17,17 +17,14 @@ as implemented in TensorFlow_. Thus, to use **cce**, you should have
 TensorFlow (with python bindings) installed on your system. See file
 requirements.txt for a complete list of dependencies.
 
-Module **cce** features the research article "Limits to channel information 
-capacity for a MAPK pathway in response to pulsatile EGF stimulation" by 
-Grabowski *et al.*, submitted to *PLOS Computational Biology* in 2018. Version
-1.0 of the code has been included as supplementary data of this article. 
-A prototypical implementation of the approach implemented in **cce** has 
-appeared earlier, supplementing the article by Tudelska *et al.*
-(`*Scientific Reports*, 2017`_).
+Module **cce** features the research article "Limits to the rate of 
+information transmission through MAPK pathway" by Grabowski *et al.*, 
+submitted to *PLOS Computational Biology* in 2018. Release 0.4 of the 
+code has been included as supplementary data of this article. 
 
-For any updates and fixes to **cce**, visit project homepage:`
+For any updates and fixes to **cce**, please visit project homepage:
 http://pmbm.ippt.pan.pl/software/cce 
-(which currently directs to a GitHub repository:
+(this permalink currently directs to a GitHub repository:
 https://github.com/pawel-czyz/channel-capacity-estimator).
 
 
@@ -161,9 +158,7 @@ This software is distributed under `GNU GPL 3.0 license`_.
 
 
 .. _information capacity: https://en.wikipedia.org/wiki/Channel_capacity
-.. _arXiv:    https://arxiv.org/pdf/cond-mat/0305641.pdf
-.. _Crossref: https://doi.org/10.1103/PhysRevE.69.066138
-.. _*Scientific Reports*, 2017: https://doi.org/10.1038/s41598-017-16166-y
+.. _Kraskov et al.: https://doi.org/10.1103/PhysRevE.69.066138
 .. _TensorFlow:       https://www.tensorflow.org
 .. _Frederic Grabowski: https://github.com/grfrederic
 .. _Paweł Czyż: https://github.com/pawel-czyz
