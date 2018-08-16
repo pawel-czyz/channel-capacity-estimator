@@ -4,18 +4,18 @@ cce package
 Submodules
 ----------
 
-cce\.score module
------------------
+cce\.scoring module
+-------------------
 
-.. automodule:: cce.score
+.. automodule:: cce.scoring
     :members:
     :undoc-members:
     :show-inheritance:
 
-cce\.preprocess module
-----------------------
+cce\.preprocessing module
+-------------------------
 
-.. automodule:: cce.preprocess
+.. automodule:: cce.preprocessing
     :members:
     :undoc-members:
     :show-inheritance:
@@ -28,10 +28,10 @@ cce\.estimator module
     :undoc-members:
     :show-inheritance:
 
-cce\.optimize module
---------------------
+cce\.optimization module
+------------------------
 
-.. automodule:: cce.optimize
+.. automodule:: cce.optimization
     :members:
     :undoc-members:
     :show-inheritance:

@@ -4,8 +4,8 @@ Channel Capacity Estimator
 
 Channel Capacity Estimator (**cce**) is a python module to estimate 
 `information capacity`_ of a communication channel. Mutual information,
-computed as proposed by `Kraskov et al.` (*Physical Review E*, 2004)
-Eq. (8), is maximized over input probabilities by means of a constrained 
+computed as proposed by `Kraskov et al.`_ (*Physical Review E*, 2004,
+Eq. (8)), is maximized over input probabilities by means of a constrained 
 gradient-based stochastic optimization. The only parameter of the Kraskov 
 algorithm is the number of neighbors, *k*, used in the nearest neighbor 
 search. In **cce**, channel input is expected to be of categorical type 
@@ -19,8 +19,9 @@ requirements.txt for a complete list of dependencies.
 
 Module **cce** features the research article "Limits to the rate of 
 information transmission through MAPK pathway" by Grabowski *et al.*, 
-submitted to *PLOS Computational Biology* in 2018. Release 0.4 of the 
-code has been included as supplementary data of this article. 
+submitted to *PLOS Computational Biology* (2018). Version 1.0 of **cce**
+(with pre-built documentation) has been included as supplementary code 
+of this article.
 
 For any updates and fixes to **cce**, please visit project homepage:
 http://pmbm.ippt.pan.pl/software/cce 
@@ -38,7 +39,7 @@ There are three major use cases of **cce**:
 
 In the example below, mutual information is calculated between three sets 
 of points drawn at random from two-dimensional Gaussian distributions,
-located at (0,0), (1,1), and at (3,3) (in SciPy, covariance matrices of 
+located at (0,0), (0,1), and at (3,3) (in SciPy, covariance matrices of 
 all three distributions  by default are identity matrices). Auxiliary 
 function `label_all_with` helps to prepare the list of all points, in 
 which each point is labeled according to its distribution of origin.
@@ -51,15 +52,16 @@ which each point is labeled according to its distribution of origin.
     >>> def label_all_with(label, values): return [(label, v) for v in values]
     >>>
     >>> data = label_all_with('A', mvn(mean=(0,0)).rvs(10000)) \
-             + label_all_with('B', mvn(mean=(1,1)).rvs(10000)) \
+             + label_all_with('B', mvn(mean=(0,1)).rvs(10000)) \
              + label_all_with('C', mvn(mean=(3,3)).rvs(10000))
     >>>
-    >>> wke(data).calculate_mi(k=50)
-    0.9386627422798913
+    >>> wke(data).calculate_mi(k=10)
+    0.9552107248613955
 
 In this example, probabilities of input distributions, henceforth referred
 to as *weights*, are assumed to be equal for all input distributions. Format
-of data is akin to [('A', array([-0.4, 2.8])), ('A', array([-0.9, -0.1])), ..., ('B', array([1.7, 0.9])), ..., ('C', array([3.2, 3.3])), ...).
+of data is akin to [('A', array([-0.4, 2.8])), ('A', array([-0.9, -0.1])), 
+..., ('B', array([1.7, 0.9])), ..., ('C', array([3.2, 3.3])), ...).
 Entries of data are not required to be grouped according to the label.
 Distribution labels can be given as strings, not just single characters. 
 Instead of NumPy arrays, ordinary lists with coordinates will be also 
@@ -81,12 +83,12 @@ input distributions:
     >>> def label_all_with(label, values): return [(label, v) for v in values]
     >>>
     >>> data = label_all_with('A', mvn(mean=(0,0)).rvs(10000)) \
-             + label_all_with('B', mvn(mean=(1,1)).rvs(10000)) \
+             + label_all_with('B', mvn(mean=(0,1)).rvs(10000)) \
              + label_all_with('C', mvn(mean=(3,3)).rvs(10000))
     >>>
-    >>> weights = {'A': 3/6, 'B': 1/6, 'C': 2/6}
-    >>> wke(data).calculate_weighted_mi(weights=weights, k=50)
-    0.9420502318804324  
+    >>> weights = {'A': 2/6, 'B': 1/6, 'C': 3/6}
+    >>> wke(data).calculate_weighted_mi(weights=weights, k=10)
+    1.0065891280377155
 
 (This example involves random numbers, so your result may vary slightly.)
 
@@ -102,11 +104,11 @@ input distributions:
     >>> def label_all_with(label, values): return [(label, v) for v in values]
     >>>
     >>> data = label_all_with('A', mvn(mean=(0,0)).rvs(10000)) \
-             + label_all_with('B', mvn(mean=(1,1)).rvs(10000)) \
+             + label_all_with('B', mvn(mean=(0,1)).rvs(10000)) \
              + label_all_with('C', mvn(mean=(3,3)).rvs(10000))
     >>>
-    >>> wke(data).calculate_maximized_mi(k=50)
-    (0.98616722147976, {'A': 0.38123083, 'B': 0.16443817, 'C': 0.45433092})
+    >>> wke(data).calculate_maximized_mi(k=10)
+    (1.0154510500713743, {'A': 0.33343804, 'B': 0.19158363, 'C': 0.4749783})
 
 The output tuple contains the maximized mutual information (channel capacity) 
 and probabilities of input distributions that maximize mutual information (argmax). 
@@ -114,13 +116,25 @@ Optimization is performed within TensorFlow with multiple threads and takes
 less than a minute on a quad-core processor.
 (This example involves random numbers, so your result may vary slightly.)
 
+
 Testing
 -------
-To launch a suite of unit tests run:
+To launch a suite of unit tests, run:
 
 .. code:: bash
 
     $ make test
+
+
+Documentation
+-------------
+Developer's code documentation may be generated with
+
+.. code:: bash
+
+   $ cd docs
+   $ make html
+
 
 Installation
 ------------
@@ -139,8 +153,6 @@ Then, you can directly start using the package:
     >>> ...
 
 
-
-
 Authors
 -------
 
@@ -148,7 +160,7 @@ The code was developed by `Frederic Grabowski`_ and `Paweł Czyż`_,
 with some guidance from `Marek Kochańczyk`_ and under supervision of 
 `Tomasz Lipniacki`_ from the `Laboratory of Modeling in Biology and Medicine`_,
 `Institute of Fundamental Technological Reasearch, Polish Academy of Sciences`_
-in Warsaw.
+(IPPT PAN) in Warsaw.
 
 
 License

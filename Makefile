@@ -1,20 +1,21 @@
-# Run unit tests
 test:
-	python3 -m unittest discover -s tests > /dev/null
+	@echo "Running unit tests..."
+	@python3 -m unittest discover -s tests > /dev/null
 
-# Check test coverage using unittest module
 coverage:
-	coverage run --source=cce -m unittest discover -s tests > /dev/null; coverage report
+	@echo "Checking test coverage using unittest module..."
+	@coverage run --source=cce -m unittest discover -s tests > /dev/null; coverage report
 
-# Check test coverage and show the results in browser
 html:
-	coverage run --source=cce -m unittest discover -s tests > /dev/null; coverage html; python -m webbrowser "./htmlcov/index.html" &
+	@echo "Checking test coverage and showing the results in browser..."
+	@coverage run --source=cce -m unittest discover -s tests > /dev/null; coverage html; python -m webbrowser "./htmlcov/index.html" &
 
-# Check compatibility with Python 2.7
 comp:
-	python2 -m unittest discover -s tests > /dev/null
+	@echo "Checking compatibility with Python 2.7..."
+	@python2 -m unittest discover -s tests > /dev/null
 
 install:
-	pip install .
+	@echo "Installing cce module via pip..."
+	@pip install .
 
-.PHONY: test
+.PHONY: test coverage html comp install

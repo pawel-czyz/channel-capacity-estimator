@@ -16,7 +16,7 @@ def _project_coords(data: list) -> list:
 
 
 def normalize(data: list) -> list:
-    """Perform input data normalization
+    """Performs input data normalization.
 
     Parameters
     ----------
@@ -44,7 +44,7 @@ def normalize(data: list) -> list:
 
 
 def unique(arr) -> bool:
-    """Check if all points in the array of coordinates are unique.
+    """Checks if all points in the array of coordinates are unique.
 
     Parameters
     ----------
@@ -60,7 +60,7 @@ def unique(arr) -> bool:
 
 
 def add_noise_if_duplicates(data: list) -> list:
-    """Add noise to input data
+    """Adds noise to input data.
 
     Parameters
     ----------

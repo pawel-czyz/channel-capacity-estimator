@@ -8,9 +8,9 @@ from collections import defaultdict
 from scipy.spatial import cKDTree
 from scipy.special import digamma
 import numpy as np
-from cce.preprocess import normalize, add_noise_if_duplicates
-from cce.optimize import weight_optimizer
-from cce.score import weight_loss
+from cce.preprocessing import normalize, add_noise_if_duplicates
+from cce.optimization import weight_optimizer
+from cce.scoring import weight_loss
 
 
 class WeightedKraskovEstimator:
@@ -39,7 +39,7 @@ class WeightedKraskovEstimator:
         self._number_of_points_for_label = defaultdict(lambda: 0)
         self._number_of_labels = None
 
-        # Immersed data -- X is mapped from cateogorical data into reals
+        # Immersed data -- X is mapped from categorical data into reals
         # using _huge_dist, and we store spaces X x Y and just Y.
         self._immersed_data_full = None
         self._immersed_data_coordinates = None
@@ -226,7 +226,7 @@ class WeightedKraskovEstimator:
 
 
     def optimize_weights(self) -> tuple:
-        """Function optimizing weights using weight_optimizer.
+        """Optimizes probabilities of input distributions (weights).
 
         Returns
         -------
@@ -281,7 +281,7 @@ class WeightedKraskovEstimator:
 
 
     def calculate_neighborhoods(self, k: int):
-        """Function that prepares neighborhood_array.
+        """Prepares neighborhood_array.
 
         Parameters
         ----------

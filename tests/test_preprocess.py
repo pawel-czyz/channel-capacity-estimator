@@ -1,5 +1,5 @@
 import unittest
-from cce.preprocess import normalize
+from cce.preprocessing import normalize
 
 LARGE_VALUES_SMALL_SPREAD = [('1', [1e9, 1e9]),
                              ('1', [1e9+1, 1e9+1]),
