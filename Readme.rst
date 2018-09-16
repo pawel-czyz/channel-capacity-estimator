@@ -12,16 +12,17 @@ search. In **cce**, channel input is expected to be of categorical type
 (meaning that it should be described by labels), whereas channel output
 is assumed to be in the form of points in real space of any dimensionality. 
 
-The code performs gradient optimization according to ADAM algorithm 
-as implemented in TensorFlow_. Thus, to use **cce**, you should have 
-TensorFlow (with python bindings) installed on your system. See file
-requirements.txt for a complete list of dependencies.
+The code performs local gradient-based optimization that, owing to the
+fact that mutual information is a concave function of input probabilities,
+is able to locate global maximum of mutual information. Maximization is
+performed according to ADAM algorithm as implemented in TensorFlow_.
+To use **cce**, you should have TensorFlow (with python bindings) installed
+on your system. See file requirements.txt for a complete list of dependencies.
 
 Module **cce** features the research article "Limits to the rate of 
 information transmission through MAPK pathway" by Grabowski *et al.*, 
-submitted to *PLOS Computational Biology* (2018). Version 1.0 of **cce**
-(with pre-built documentation) has been included as supplementary code 
-of this article.
+(submitted 2018). Version 1.0 of **cce** (with pre-built documentation)
+has been included as supplementary code of this article.
 
 For any updates and fixes to **cce**, please visit project homepage:
 http://pmbm.ippt.pan.pl/software/cce 
@@ -128,7 +129,7 @@ To launch a suite of unit tests, run:
 
 Documentation
 -------------
-Developer's code documentation may be generated with
+Developer's code documentation may be generated with:
 
 .. code:: bash
 

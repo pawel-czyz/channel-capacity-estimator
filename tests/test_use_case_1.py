@@ -1,6 +1,6 @@
 import unittest
 from itertools import product
-from numpy import cos, sin, log2
+from numpy import cos, sin, log2, identity
 from scipy.stats import multivariate_normal as multinorm
 from cce.estimator import WeightedKraskovEstimator as wke
 from tests.plain_kraskov import calculate_mi as plain_calculate_mi
@@ -55,9 +55,7 @@ class TestUseCase1(unittest.TestCase):
         for dist_i, count in enumerate(8*[5000]):
             mu, sigma = dist_i+1, 33 + 3*dist_i
             means3 = [mu**2.5, 50*cos(mu/0.75), 200*sin(mu/1.5)]
-            covar3 = [[sigma**2, 0, 0],
-                      [0, sigma**2, 0],
-                      [0, 0, sigma**2]]
+            covar3 = sigma**2*identity(3);
             for v in multinorm(means3, covar3).rvs(count):
                 data.append((dist_i, v))
         mi_est = wke(data).calculate_mi(k=NN_K)
@@ -69,9 +67,7 @@ class TestUseCase1(unittest.TestCase):
         data = []
         for i, count in enumerate(8*[5000]):
             means3, sigma = (box[i], 0.25 + ((i + 1)/8 + sum(box[i]))/10)
-            covar3 = [[sigma**2, 0, 0],
-                      [0, sigma**2, 0],
-                      [0, 0, sigma**2]]
+            covar3 = sigma**2*identity(3);
             for v in multinorm(means3, covar3).rvs(count):
                 data.append((i, v))
         mi_est = wke(data).calculate_mi(k=NN_K)
