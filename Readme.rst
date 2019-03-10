@@ -2,31 +2,31 @@
 Channel Capacity Estimator
 ==========================
 
-Channel Capacity Estimator (**cce**) is a python module to estimate 
+Channel Capacity Estimator (**cce**) is a Python module to estimate
 `information capacity`_ of a communication channel. Mutual information,
-computed as proposed by `Kraskov et al.`_ (*Physical Review E*, 2004,
-Eq. (8)), is maximized over input probabilities by means of a constrained 
-gradient-based stochastic optimization. The only parameter of the Kraskov 
-algorithm is the number of neighbors, *k*, used in the nearest neighbor 
-search. In **cce**, channel input is expected to be of categorical type 
+computed as proposed by `Kraskov et al.`_ [*Physical Review E* 69:066138, 2004,
+equation 8], is maximized over input probabilities by means of a constrained
+gradient-based stochastic optimization. The only parameter of the Kraskov
+algorithm is the number of neighbors, *k*, used in the nearest neighbor
+search. In **cce**, channel input is expected to be of categorical type
 (meaning that it should be described by labels), whereas channel output
-is assumed to be in the form of points in real space of any dimensionality. 
+is assumed to be in the form of points in real space of any dimensionality.
 
-The code performs local gradient-based optimization that, owing to the
+The code performs local gradient-based optimization which, owing to the
 fact that mutual information is a concave function of input probabilities,
 is able to locate global maximum of mutual information. Maximization is
 performed according to ADAM algorithm as implemented in TensorFlow_.
-To use **cce**, you should have TensorFlow (with python bindings) installed
-on your system. See file requirements.txt for a complete list of dependencies.
+To use **cce**, you should have TensorFlow (with Python bindings) installed
+on your system. See file `requirements.txt` for a complete list of dependencies.
 
-Module **cce** features the research article "Limits to the rate of 
-information transmission through MAPK pathway" by Grabowski *et al.*, 
-(submitted 2018). Version 1.0 of **cce** (with pre-built documentation)
-has been included as supplementary code of this article.
+Module **cce** features the research article "Limits to the rate of
+information transmission through the MAPK pathway" by `Grabowski et al.`_
+[*Journal of the Royal Society Interface* 16:20180792, 2019].
+Version 1.0 of **cce** has been included as the article supplementary code.
 
 For any updates and fixes to **cce**, please visit project homepage:
-http://pmbm.ippt.pan.pl/software/cce 
-(this permalink currently directs to a GitHub repository:
+http://pmbm.ippt.pan.pl/software/cce
+(this is a permalink that currently directs to a GitHub repository:
 https://github.com/pawel-czyz/channel-capacity-estimator).
 
 
@@ -38,11 +38,11 @@ There are three major use cases of **cce**:
 1. Calculation of mutual information (for equiprobable input distributions).
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In the example below, mutual information is calculated between three sets 
+In the example below, mutual information is calculated between three sets
 of points drawn at random from two-dimensional Gaussian distributions,
-located at (0,0), (0,1), and at (3,3) (in SciPy, covariance matrices of 
-all three distributions  by default are identity matrices). Auxiliary 
-function `label_all_with` helps to prepare the list of all points, in 
+located at (0,0), (0,1), and at (3,3); covariance matrices of all three
+distributions are identity matrices (this is default in SciPy). Auxiliary
+function `label_all_with()` helps to prepare the list of all points, in
 which each point is labeled according to its distribution of origin.
 
 .. code:: python
@@ -114,7 +114,7 @@ input distributions:
 The output tuple contains the maximized mutual information (channel capacity) 
 and probabilities of input distributions that maximize mutual information (argmax). 
 Optimization is performed within TensorFlow with multiple threads and takes 
-less than a minute on a quad-core processor.
+less than one minute on a computer with quad-core processor.
 (This example involves random numbers, so your result may vary slightly.)
 
 
@@ -171,8 +171,9 @@ This software is distributed under `GNU GPL 3.0 license`_.
 
 
 .. _information capacity: https://en.wikipedia.org/wiki/Channel_capacity
-.. _Kraskov et al.: https://doi.org/10.1103/PhysRevE.69.066138
-.. _TensorFlow:       https://www.tensorflow.org
+.. _Kraskov et al.: https://dx.doi.org/10.1103/PhysRevE.69.066138
+.. _Grabowski et al.: https://dx.doi.org/10.1098/rsif.2018.0792
+.. _TensorFlow: https://www.tensorflow.org
 .. _Frederic Grabowski: https://github.com/grfrederic
 .. _Paweł Czyż: https://github.com/pawel-czyz
 .. _Marek Kochańczyk: http://pmbm.ippt.pan.pl/web/Marek_Kochanczyk
