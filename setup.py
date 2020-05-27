@@ -7,7 +7,7 @@ def readme():
 
 setup(
     name='channel-capacity-estimator',
-    version='1.0.0',
+    version='1.0.1',
     description='Package for estimation of information channel capacity.',
     url='http://pmbm.ippt.pan.pl/software/cce',
     author='Frederic Grabowski, Pawel Czyz',

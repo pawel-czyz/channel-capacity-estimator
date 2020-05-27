@@ -4,7 +4,9 @@
 
 from collections import Counter
 import numpy as np
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
+
+tf.disable_v2_behavior()
 
 
 def weight_loss(neighb_count: np.array, labels: np.array,
