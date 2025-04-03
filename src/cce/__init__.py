@@ -2,4 +2,6 @@
 # licenced under GNU GPL 3 (see file License.txt).
 # Homepage: http://pmbm.ippt.pan.pl/software/cce 
 
-from .estimator import WeightedKraskovEstimator
+from cce.estimator import WeightedKraskovEstimator
+
+__all__ = ["WeightedKraskovEstimator"]
