@@ -124,8 +124,8 @@ Installation
 Before installing the package, we recommend creating a new Python environment using `venv <https://docs.python.org/3/library/venv.html>`_ or `Micromamba <https://mamba.readthedocs.io/>`_.
 
 
-Python Package Index (PyPI)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Python Package Index
+~~~~~~~~~~~~~~~~~~~~
 
 Once the environment has been created, the most convenient manner is to install the package from PyPI using:
 
@@ -143,7 +143,7 @@ Then, you can directly start using the package:
 
 
 Local installation
-^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~
 
 Alternatively, you can build the package locally.
 

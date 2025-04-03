@@ -4,7 +4,7 @@ version = "1.1"
 description = "Package for estimation of information channel capacity."
 authors = ["Frederic Grabowski <grabowski.frederic@gmail.com>, Pawel Czyz <pczyz@protonmail.com>"]
 license = "GPL-3.0"
-readme = "Readme.rst"
+readme = "README.rst"
 packages = [{include = "cce", from = "src"}]
 
 [tool.poetry.dependencies]
