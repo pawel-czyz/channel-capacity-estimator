@@ -118,6 +118,56 @@ less than one minute on a computer with quad-core processor.
 (This example involves random numbers, so your result may vary slightly.)
 
 
+Installation
+------------
+
+Before installing the package, we recommend creating a new Python environment using `venv <https://docs.python.org/3/library/venv.html>`_ or `Micromamba <https://mamba.readthedocs.io/>`_.
+
+
+Python Package Index (PyPI)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Once the environment has been created, the most convenient manner is to install the package from PyPI using:
+
+.. code:: bash
+
+   $ pip install channel-capacity-estimator
+
+Then, you can directly start using the package:
+
+.. code:: bash
+
+    $ python
+    >>> from cce import WeightedKraskovEstimator
+    >>> ...
+
+
+Local installation
+^^^^^^^^^^^^^^^^^^
+
+Alternatively, you can build the package locally.
+
+.. code:: bash
+
+   $ git clone https://github.com/pawel-czyz/channel-capacity-estimator.git
+   $ cd channel-capacity-estimator
+
+To install **cce** locally via pip, run:
+
+.. code:: bash
+
+    $ make install
+
+Then, you can directly start using the package:
+
+.. code:: bash
+
+    $ python
+    >>> from cce import WeightedKraskovEstimator
+    >>> ...
+
+
+
 Testing
 -------
 To launch a suite of unit tests, run:
@@ -135,23 +185,6 @@ Developer's code documentation may be generated with:
 
    $ cd docs
    $ make html
-
-
-Installation
-------------
-To install **cce** locally via pip, run:
-
-.. code:: bash
-
-    $ make install
-
-Then, you can directly start using the package:
-
-.. code:: bash
-
-    $ python
-    >>> from cce import WeightedKraskovEstimator
-    >>> ...
 
 
 Authors
