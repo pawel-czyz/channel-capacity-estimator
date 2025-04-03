@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "channel-capacity-estimator"
+version = "2.0"
+description = "Package for estimation of information channel capacity."
+authors = ["Frederic Grabowski <grabowski.frederic@gmail.com>, Pawel Czyz <pczyz@protonmail.com>"]
+license = "GPL-3.0"
+readme = "README.md"
+packages = [{include = "cce", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+numpy = "^2.2.4"
+scipy = "^1.15.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
